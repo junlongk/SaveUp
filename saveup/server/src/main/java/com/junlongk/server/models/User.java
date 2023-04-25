@@ -92,9 +92,17 @@ public class User implements UserDetails {
         this.lastName = lastName;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
-        return "User{userId='%s', email='%s', firstName='%s', lastName='%s', role=%s}"
-                .formatted(userId, email, firstName, lastName, role);
+        return "User{userId='%s', email='%s', password='%s', firstName='%s', lastName='%s', role=%s}"
+                .formatted(userId, email, password, firstName, lastName, role);
     }
 }

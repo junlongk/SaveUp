@@ -1,6 +1,8 @@
 package com.junlongk.server;
 
+import com.junlongk.server.models.Role;
 import com.junlongk.server.models.User;
+import jakarta.json.JsonObject;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 public class Utils {
@@ -12,6 +14,15 @@ public class Utils {
         user.setPassword(rs.getString("password"));
         user.setFirstName(rs.getString("firstName"));
         user.setLastName(rs.getString("lastName"));
+        return user;
+    }
+
+    public static User jsonToUser(JsonObject json) {
+        User user = new User();
+        user.setEmail(json.getString("email"));
+        user.setFirstName(json.getString("firstName"));
+        user.setLastName(json.getString("lastName"));
+        user.setRole(Role.USER);
         return user;
     }
 }
