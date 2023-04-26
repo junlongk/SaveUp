@@ -5,8 +5,6 @@ import com.junlongk.server.models.AuthResponse;
 import com.junlongk.server.models.LoginRequest;
 import com.junlongk.server.models.RegisterRequest;
 import com.junlongk.server.services.AuthService;
-import jakarta.json.Json;
-import jakarta.json.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
