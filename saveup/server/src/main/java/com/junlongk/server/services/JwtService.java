@@ -24,6 +24,10 @@ public class JwtService {
         return extractClaim(jwtToken, Claims::getSubject);
     }
 
+    private Date extractExpiration(String jwtToken) {
+        return extractClaim(jwtToken, Claims::getExpiration);
+    }
+
     public <T> T extractClaim(String jwtToken, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(jwtToken);
         return claimsResolver.apply(claims);
@@ -49,7 +53,7 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -61,10 +65,6 @@ public class JwtService {
 
     private boolean isTokenExpired(String jwtToken) {
         return extractExpiration(jwtToken).before(new Date());
-    }
-
-    private Date extractExpiration(String jwtToken) {
-        return extractClaim(jwtToken, Claims::getExpiration);
     }
 
     private Key getSigningKey() {

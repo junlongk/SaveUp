@@ -1,8 +1,12 @@
 package com.junlongk.server.controllers;
 
+import com.junlongk.server.Utils;
+import com.junlongk.server.models.AuthResponse;
 import com.junlongk.server.models.LoginRequest;
 import com.junlongk.server.models.RegisterRequest;
 import com.junlongk.server.services.AuthService;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,17 +29,20 @@ public class AuthController {
     public ResponseEntity<String> register(
             @RequestBody RegisterRequest request) {
 
+        AuthResponse authResponse = authService.register(request);
 
-        return ResponseEntity.ok(authService.register(request));
+        return ResponseEntity.ok(Utils.authRespToStr(authResponse));
     }
 
     // Login Request -> email, password
     // Response -> JWT token
     @PostMapping(path = "/login")
+    @ResponseBody
     public ResponseEntity<String> login(
             @RequestBody LoginRequest request) {
 
+        AuthResponse authResponse = authService.authenticate(request);
 
-        return ResponseEntity.ok(authService.authenticate(request));
+        return ResponseEntity.ok(Utils.authRespToStr(authResponse));
     }
 }

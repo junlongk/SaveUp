@@ -1,9 +1,6 @@
 package com.junlongk.server.services;
 
-import com.junlongk.server.models.LoginRequest;
-import com.junlongk.server.models.RegisterRequest;
-import com.junlongk.server.models.Role;
-import com.junlongk.server.models.User;
+import com.junlongk.server.models.*;
 import com.junlongk.server.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,9 +9,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+import java.util.logging.Logger;
 
 @Service
 public class AuthService {
+
+    private final Logger logger = Logger.getLogger(AuthService.class.getName());
 
     @Autowired
     private UserRepository userRepo;
@@ -28,7 +28,7 @@ public class AuthService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public String register(RegisterRequest request) {
+    public AuthResponse register(RegisterRequest request) {
 
         User user = new User();
 
@@ -47,10 +47,12 @@ public class AuthService {
 
         userRepo.register(user);
 
-        return jwtService.generateToken(user);
+        String jwtToken = jwtService.generateToken(user);
+
+        return new AuthResponse(jwtToken);
     }
 
-    public String authenticate(LoginRequest request) {
+    public AuthResponse authenticate(LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                      request.getEmail(),
@@ -61,6 +63,12 @@ public class AuthService {
         User user = userRepo.getUserByEmail(request.getEmail())
                 .orElseThrow();
 
-        return jwtService.generateToken(user);
+        logger.info(">>> login request user:\n%s\n".formatted(user.toString()));
+
+        String jwtToken = jwtService.generateToken(user);
+
+        logger.info(">>> login jwt: %s\n".formatted(jwtToken));
+
+        return new AuthResponse(jwtToken);
     }
 }
