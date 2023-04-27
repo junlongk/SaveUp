@@ -10,6 +10,10 @@ import { MainPageComponent } from './components/main-page/main-page.component';
 import { BudgetsComponent } from './components/budgets/budgets.component';
 import { TransactionsComponent } from './components/transactions/transactions.component';
 import { AccountsComponent } from './components/accounts/accounts.component';
+import { UserPageComponent } from './components/user-page/user-page.component';
+import {ReactiveFormsModule} from "@angular/forms";
+import {HttpClientModule} from "@angular/common/http";
+import {JwtAuthService} from "./services/jwt-auth.service";
 
 @NgModule({
   declarations: [
@@ -20,13 +24,16 @@ import { AccountsComponent } from './components/accounts/accounts.component';
     MainPageComponent,
     BudgetsComponent,
     TransactionsComponent,
-    AccountsComponent
+    AccountsComponent,
+    UserPageComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [ JwtAuthService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
