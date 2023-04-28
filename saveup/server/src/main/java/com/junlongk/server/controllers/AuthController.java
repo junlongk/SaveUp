@@ -1,11 +1,12 @@
 package com.junlongk.server.controllers;
 
-import com.junlongk.server.Utils;
-import com.junlongk.server.models.AuthResponse;
 import com.junlongk.server.models.LoginRequest;
 import com.junlongk.server.models.RegisterRequest;
 import com.junlongk.server.services.AuthService;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,9 +27,15 @@ public class AuthController {
     public ResponseEntity<String> register(
             @RequestBody RegisterRequest request) {
 
-        AuthResponse authResponse = authService.register(request);
+        String jwtToken = authService.register(request);
 
-        return ResponseEntity.ok(Utils.authRespToStr(authResponse));
+        JsonObject resp = Json.createObjectBuilder()
+                .add("token", jwtToken)
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(resp.toString());
     }
 
     // Login Request -> email, password
@@ -38,8 +45,14 @@ public class AuthController {
     public ResponseEntity<String> login(
             @RequestBody LoginRequest request) {
 
-        AuthResponse authResponse = authService.authenticate(request);
+        String jwtToken = authService.authenticate(request);
 
-        return ResponseEntity.ok(Utils.authRespToStr(authResponse));
+        JsonObject resp = Json.createObjectBuilder()
+                .add("token", jwtToken)
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(resp.toString());
     }
 }

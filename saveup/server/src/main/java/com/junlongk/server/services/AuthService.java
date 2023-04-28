@@ -28,7 +28,7 @@ public class AuthService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public AuthResponse register(RegisterRequest request) {
+    public String register(RegisterRequest request) {
 
         User user = new User();
 
@@ -49,10 +49,13 @@ public class AuthService {
 
         String jwtToken = jwtService.generateToken(user);
 
-        return new AuthResponse(jwtToken);
+        logger.info(">>> registered successful!\n");
+        logger.info(">>> register jwt: %s\n".formatted(jwtToken));
+
+        return jwtToken;
     }
 
-    public AuthResponse authenticate(LoginRequest request) {
+    public String authenticate(LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                      request.getEmail(),
@@ -63,12 +66,11 @@ public class AuthService {
         User user = userRepo.getUserByEmail(request.getEmail())
                 .orElseThrow();
 
-        logger.info(">>> login request user:\n%s\n".formatted(user.toString()));
-
         String jwtToken = jwtService.generateToken(user);
 
+        logger.info(">>> login user found!\n%s\n".formatted(user.toString()));
         logger.info(">>> login jwt: %s\n".formatted(jwtToken));
 
-        return new AuthResponse(jwtToken);
+        return jwtToken;
     }
 }
