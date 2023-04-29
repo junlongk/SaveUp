@@ -35,7 +35,18 @@ export class SignupComponent implements OnInit {
     console.info('>>> user: ', userData);
 
     this.jwtAuthSvc.signupUser(userData)
-      .then(result => console.info('>>> jwtToken: ', result));
+      .then(result => {
+        const jwtToken = result.token;
+        console.info('>>> jwtToken: ', jwtToken);
+
+        if(jwtToken.length > 0) {
+          localStorage.setItem('token', jwtToken);
+          this.router.navigate(['/user']);
+        } else {
+          // TODO - need to handle 403 from server on wrong password/email
+          // TODO - ask user to try again
+        }
+      });
     this.router.navigate(['/']);
   }
 }

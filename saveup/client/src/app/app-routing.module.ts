@@ -14,10 +14,9 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'user', component: UserPageComponent,
       children: [
-        { path: 'transactions', component: TransactionsComponent },
         { path: 'budgets', component: BudgetsComponent },
-        { path: 'accounts', component: AccountsComponent },
-        { path: '**', redirectTo: 'user', pathMatch: 'full' }
+        { path: 'transactions', component: TransactionsComponent },
+        { path: 'accounts', component: AccountsComponent }
       ]},
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

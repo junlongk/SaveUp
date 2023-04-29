@@ -14,6 +14,7 @@ import { UserPageComponent } from './components/user-page/user-page.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {JwtAuthService} from "./services/jwt-auth.service";
+import {JwtModule} from "@auth0/angular-jwt";
 
 @NgModule({
   declarations: [
@@ -31,7 +32,14 @@ import {JwtAuthService} from "./services/jwt-auth.service";
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem('token');
+        }
+      }
+    })
   ],
   providers: [ JwtAuthService ],
   bootstrap: [AppComponent]

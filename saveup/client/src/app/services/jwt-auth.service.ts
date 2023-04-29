@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {User} from "../models/User";
 import {UserLogin} from "../models/UserLogin";
 import {lastValueFrom} from "rxjs";
+import {JwtHelperService} from "@auth0/angular-jwt";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class JwtAuthService {
   private REGISTER_URL = "/api/auth/register";
   private LOGIN_URL = "/api/auth/login";
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,
+              private jwtHelper: JwtHelperService) { }
 
 
   signupUser(user: User): Promise<any> {
@@ -34,4 +36,15 @@ export class JwtAuthService {
     return lastValueFrom(this.httpClient
       .post<UserLogin>(this.LOGIN_URL, body, { headers }));
   }
+
+  logoutUser() {
+    localStorage.removeItem('token');
+  }
+
+  isLoggedIn(): boolean {
+    const jwtToken = localStorage.getItem('token');
+
+    return (!!jwtToken && !this.jwtHelper.isTokenExpired(jwtToken));
+  }
+
 }
