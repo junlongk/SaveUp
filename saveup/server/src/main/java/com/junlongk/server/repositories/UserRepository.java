@@ -25,6 +25,10 @@ public class UserRepository {
             SELECT * FROM user_data WHERE email = ?
             """;
 
+    public static final String SQL_GET_USER_BY_USERID = """
+            SELECT * FROM user_data WHERE user_id = ?
+            """;
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -36,6 +40,16 @@ public class UserRepository {
         } else {
             return Optional.empty();
         }
+    }
+
+    public Optional<User> getUserByUserId(String userId) {
+        User user = jdbcTemplate.queryForObject(SQL_GET_USER_BY_USERID,
+                BeanPropertyRowMapper.newInstance(User.class), userId);
+
+        if (user != null)
+            return Optional.of(user);
+        else
+            return Optional.empty();
     }
 
     public int addUser(User user) {

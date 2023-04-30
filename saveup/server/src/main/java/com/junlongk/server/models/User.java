@@ -29,7 +29,7 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         // switched out email for userId for setting userId as JWT subject
-        return email;
+        return userId;
     }
 
     @Override

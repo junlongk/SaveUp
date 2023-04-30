@@ -56,15 +56,15 @@ public class AuthService {
     }
 
     public String authenticate(LoginRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                     request.getEmail(),
-                     request.getPassword()
-                )
-        );
-
         User user = userRepo.getUserByEmail(request.getEmail())
                 .orElseThrow();
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        user.getUserId(),
+                        request.getPassword()
+                )
+        );
 
         String jwtToken = jwtService.generateToken(user);
 
