@@ -20,10 +20,6 @@ public class JwtService {
     private static final String SECRET_KEY =
             "77397A24432646294A404E635266556A586E5A7234753778214125442A472D4B";
 
-    public String extractUserEmail(String jwtToken) {
-        return extractClaim(jwtToken, Claims::getSubject);
-    }
-
     public String extractUserId(String jwtToken) {
         return extractClaim(jwtToken, Claims::getSubject);
     }

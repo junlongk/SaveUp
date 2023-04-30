@@ -32,6 +32,22 @@ public class UserRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    public boolean addUser(User user) {
+        int registered = jdbcTemplate.update(SQL_ADD_USER, new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps) throws SQLException {
+                ps.setString(1, user.getUserId());
+                ps.setString(2, user.getEmail());
+                ps.setString(3, user.getPassword());
+                ps.setString(4, user.getFirstName());
+                ps.setString(5, user.getLastName());
+                ps.setString(6, user.getRole().name());
+            }
+        });
+
+        return registered > 0;
+    }
+
     public Optional<User> getUserByEmail(String email) {
         User user = jdbcTemplate.queryForObject(SQL_GET_USER_BY_EMAIL,
                 BeanPropertyRowMapper.newInstance(User.class), email);
@@ -52,22 +68,6 @@ public class UserRepository {
             return Optional.empty();
     }
 
-    public int addUser(User user) {
-        int registered = 0;
 
-        registered = jdbcTemplate.update(SQL_ADD_USER, new PreparedStatementSetter() {
-            @Override
-            public void setValues(PreparedStatement ps) throws SQLException {
-                ps.setString(1, user.getUserId());
-                ps.setString(2, user.getEmail());
-                ps.setString(3, user.getPassword());
-                ps.setString(4, user.getFirstName());
-                ps.setString(5, user.getLastName());
-                ps.setString(6, user.getRole().name());
-            }
-        });
-
-        return registered;
-    }
 
 }

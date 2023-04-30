@@ -26,11 +26,11 @@ public class AccountService {
         return accountId;
     }
 
-    // get accounts by user id
     public Optional<List<Account>> getAccountsByUserId(String userId) {
         return accountRepo.getAccountsByUserId(userId);
     }
 
-    // update balance with amount and account id
-
+    public boolean updateBalance(float amount, String accountId) {
+        return accountRepo.updateBalance(amount, accountId);
+    }
 }
