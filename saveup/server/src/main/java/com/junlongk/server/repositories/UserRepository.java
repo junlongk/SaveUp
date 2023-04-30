@@ -25,19 +25,6 @@ public class UserRepository {
             SELECT * FROM user_data WHERE email = ?
             """;
 
-    public static final String SQL_ADD_ACCOUNT = """
-            INSERT INTO user_account (account_id, account_name, balance, user_id)
-            VALUES (?, ?, ?, ?)
-            """;
-
-    public static final String SQL_GET_ACCOUNTS_BY_USERID = """
-            SELECT account_name, balance FROM user_account WHERE user_id = ?
-            """;
-
-    public static final String SQL_UPDATE_ACCOUNT_BALANCE = """
-            UPDATE user_account SET balance = ? WHERE account_id = ?;
-            """;
-
     @Autowired
     private JdbcTemplate jdbcTemplate;
 

@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {User} from "../../models/User";
 import {UserLogin} from "../../models/UserLogin";
 import {JwtAuthService} from "../../services/jwt-auth.service";
+import {JwtHelperService} from "@auth0/angular-jwt";
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,8 @@ export class LoginComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private jwtAuthSvc: JwtAuthService,
-              private router: Router) { }
+              private router: Router,
+              private jwtHelperSvc: JwtHelperService) { }
 
   ngOnInit():void {
     this.form = this.createForm();
@@ -37,6 +39,10 @@ export class LoginComponent implements OnInit {
       .then(result => {
         const jwtToken = result.token;
         console.info('>>> jwtToken: ', jwtToken);
+
+        // decode token
+        console.info('>>> token decoded: ',
+          this.jwtHelperSvc.decodeToken(jwtToken));
 
         if(jwtToken.length > 0) {
           localStorage.setItem('token', jwtToken);
