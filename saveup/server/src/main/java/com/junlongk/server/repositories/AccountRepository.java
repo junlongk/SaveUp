@@ -20,11 +20,22 @@ public class AccountRepository {
             """;
 
     public static final String SQL_GET_ACCOUNTS_BY_USERID = """
-            SELECT account_name, balance FROM user_account WHERE user_id = ?
+            SELECT * FROM user_account WHERE user_id = ?
             """;
 
-    public static final String SQL_UPDATE_ACCOUNT_BALANCE = """
-            UPDATE user_account SET balance = ? WHERE account_id = ?;
+    // Modify account balance directly
+    public static final String SQL_MODIFY_ACCOUNT_BALANCE = """
+            UPDATE user_account SET balance = ? WHERE account_id = ?
+            """;
+
+    // Update "from" account balance for transfers
+    public static final String SQL_UPDATE_FROM_ACCOUNT_BALANCE = """
+            UPDATE user_account SET balance = balance - ? WHERE account_id = ?
+            """;
+
+    // Update "to" account balance for transfers
+    public static final String SQL_UPDATE_TO_ACCOUNT_BALANCE = """
+            UPDATE user_account SET balance = balance + ? WHERE account_id = ?
             """;
 
     @Autowired
@@ -53,13 +64,39 @@ public class AccountRepository {
             return Optional.of(accounts);
     }
 
-    public boolean updateBalance(float amount, String accountId) {
+    public boolean modifyBalance(float amount, String accountId) {
 
-        int updated = jdbcTemplate.update(SQL_UPDATE_ACCOUNT_BALANCE, new PreparedStatementSetter() {
+        int updated = jdbcTemplate.update(SQL_MODIFY_ACCOUNT_BALANCE, new PreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps) throws SQLException {
                 ps.setFloat(1, amount);
                 ps.setString(2, accountId);
+            }
+        });
+
+        return updated > 0;
+    }
+
+    public boolean updateFromBalance(float amount, String fromAccountId) {
+
+        int updated = jdbcTemplate.update(SQL_UPDATE_FROM_ACCOUNT_BALANCE, new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps) throws SQLException {
+                ps.setFloat(1, amount);
+                ps.setString(2, fromAccountId);
+            }
+        });
+
+        return updated > 0;
+    }
+
+    public boolean updateToBalance(float amount, String toAccountId) {
+
+        int updated = jdbcTemplate.update(SQL_UPDATE_TO_ACCOUNT_BALANCE, new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps) throws SQLException {
+                ps.setFloat(1, amount);
+                ps.setString(2, toAccountId);
             }
         });
 

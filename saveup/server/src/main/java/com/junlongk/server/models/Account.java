@@ -9,6 +9,9 @@ public class Account {
 
     private String userId;
 
+    public Account() {
+    }
+
     public Account(String accountId, String accountName,
                    float balance, String userId) {
         this.accountId = accountId;

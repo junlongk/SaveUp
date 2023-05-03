@@ -34,7 +34,7 @@ public class AuthController {
                 .build();
 
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .status(HttpStatus.CREATED)
                 .body(resp.toString());
     }
 
