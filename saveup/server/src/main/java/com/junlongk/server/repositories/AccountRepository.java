@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
@@ -47,7 +48,7 @@ public class AccountRepository {
             public void setValues(PreparedStatement ps) throws SQLException {
                 ps.setString(1, account.getAccountId());
                 ps.setString(2, account.getAccountName());
-                ps.setFloat(3, account.getBalance());
+                ps.setBigDecimal(3, account.getBalance());
                 ps.setString(4, account.getUserId());
             }
         });
@@ -64,12 +65,12 @@ public class AccountRepository {
             return Optional.of(accounts);
     }
 
-    public boolean modifyBalance(float amount, String accountId) {
+    public boolean modifyBalance(BigDecimal amount, String accountId) {
 
         int updated = jdbcTemplate.update(SQL_MODIFY_ACCOUNT_BALANCE, new PreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps) throws SQLException {
-                ps.setFloat(1, amount);
+                ps.setBigDecimal(1, amount);
                 ps.setString(2, accountId);
             }
         });
@@ -77,12 +78,12 @@ public class AccountRepository {
         return updated > 0;
     }
 
-    public boolean updateFromBalance(float amount, String fromAccountId) {
+    public boolean updateFromBalance(BigDecimal amount, String fromAccountId) {
 
         int updated = jdbcTemplate.update(SQL_UPDATE_FROM_ACCOUNT_BALANCE, new PreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps) throws SQLException {
-                ps.setFloat(1, amount);
+                ps.setBigDecimal(1, amount);
                 ps.setString(2, fromAccountId);
             }
         });
@@ -90,12 +91,12 @@ public class AccountRepository {
         return updated > 0;
     }
 
-    public boolean updateToBalance(float amount, String toAccountId) {
+    public boolean updateToBalance(BigDecimal amount, String toAccountId) {
 
         int updated = jdbcTemplate.update(SQL_UPDATE_TO_ACCOUNT_BALANCE, new PreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps) throws SQLException {
-                ps.setFloat(1, amount);
+                ps.setBigDecimal(1, amount);
                 ps.setString(2, toAccountId);
             }
         });

@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -69,6 +70,7 @@ public class AccountController {
 
         if (opt.isPresent()) {
             accounts = opt.get();
+            System.out.println(accounts);
             accounts.forEach(a -> arrBuilder.add(Utils.accountToJson(a)));
 
             return ResponseEntity
@@ -89,7 +91,7 @@ public class AccountController {
             @RequestBody Map<String, String> modifyDetails) {
 
         // Get details from request body
-        float amount = Float.parseFloat(modifyDetails.get("amount"));
+        BigDecimal amount = BigDecimal.valueOf(Double.parseDouble(modifyDetails.get("amount")));
         String accountId = modifyDetails.get("accountId");
 
         // Check if accountId belongs to the currentUser
@@ -127,7 +129,7 @@ public class AccountController {
             throws TransferException {
 
         // Get details from request
-        float amount = Float.parseFloat(transferDetails.get("amount"));
+        BigDecimal amount = BigDecimal.valueOf(Double.parseDouble(transferDetails.get("amount")));
         String fromAccountId = transferDetails.get("fromAccountId");
         String toAccountId = transferDetails.get("toAccountId");
 

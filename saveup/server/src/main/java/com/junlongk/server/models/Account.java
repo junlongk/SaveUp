@@ -1,11 +1,13 @@
 package com.junlongk.server.models;
 
+import java.math.BigDecimal;
+
 public class Account {
     private String accountId;
 
     private String accountName;
 
-    private float balance;
+    private BigDecimal balance;
 
     private String userId;
 
@@ -13,7 +15,7 @@ public class Account {
     }
 
     public Account(String accountId, String accountName,
-                   float balance, String userId) {
+                   BigDecimal balance, String userId) {
         this.accountId = accountId;
         this.accountName = accountName;
         this.balance = balance;
@@ -36,11 +38,11 @@ public class Account {
         this.accountName = accountName;
     }
 
-    public float getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(float balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 
