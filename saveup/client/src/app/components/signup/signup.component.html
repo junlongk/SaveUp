@@ -1,43 +1,45 @@
-<h1>Sign Up</h1>
-<form [formGroup]="form" (ngSubmit)="signUp()">
-  <table>
-    <tr>
-      <td>
-        <label for="firstName">First Name:</label>
-      </td>
-      <td>
-        <input type="text" id="firstName" size="30" formControlName="firstName">
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label for="lastName">Last Name:</label>
-      </td>
-      <td>
-        <input type="text" id="lastName" size="30" formControlName="lastName">
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label for="email">Email:</label>
-      </td>
-      <td>
-        <input type="email" id="email" size="30" formControlName="email">
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label for="password">Password:</label>
-      </td>
-      <td>
-        <input type="password" id="password" size="30" formControlName="password">
-      </td>
-    </tr>
-    <tr>
-      <td></td>
-      <td>
-        <button type="submit" [disabled]="form.invalid">Sign up!</button>
-      </td>
-    </tr>
-  </table>
-</form>
+<p-card class="flex align-items-center justify-content-center center">
+  <h1>Sign Up</h1>
+  <form [formGroup]="form" (ngSubmit)="signUp()">
+    <table>
+      <tr>
+        <td>
+          <label for="firstName">First Name:</label>
+        </td>
+        <td>
+          <input pInputText type="text" class="p-inputtext-sm" id="firstName" size="30" formControlName="firstName">
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="lastName">Last Name:</label>
+        </td>
+        <td>
+          <input pInputText type="text" class="p-inputtext-sm" id="lastName" size="30" formControlName="lastName">
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="email">Email:</label>
+        </td>
+        <td>
+          <input pInputText type="email" class="p-inputtext-sm" id="email" size="30" formControlName="email">
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="password">Password:</label>
+        </td>
+        <td>
+          <input pInputText type="password" class="p-inputtext-sm" id="password" size="30" formControlName="password">
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <p-button type="submit" [disabled]="form.invalid">Sign up!</p-button>
+        </td>
+      </tr>
+    </table>
+  </form>
+</p-card>

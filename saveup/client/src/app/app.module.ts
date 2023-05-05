@@ -11,10 +11,11 @@ import { BudgetsComponent } from './components/budgets/budgets.component';
 import { TransactionsComponent } from './components/transactions/transactions.component';
 import { AccountsComponent } from './components/accounts/accounts.component';
 import { UserPageComponent } from './components/user-page/user-page.component';
-import {ReactiveFormsModule} from "@angular/forms";
-import {HttpClientModule} from "@angular/common/http";
-import {JwtAuthService} from "./services/jwt-auth.service";
-import {JwtModule} from "@auth0/angular-jwt";
+import { ReactiveFormsModule } from "@angular/forms";
+import { HttpClientModule } from "@angular/common/http";
+import { JwtAuthService } from "./services/jwt-auth.service";
+import { JwtModule } from "@auth0/angular-jwt";
+import { PrimengModule } from "./primeng.module";
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import {JwtModule} from "@auth0/angular-jwt";
           return localStorage.getItem('token');
         }
       }
-    })
+    }),
+    PrimengModule
   ],
   providers: [ JwtAuthService ],
   bootstrap: [AppComponent]

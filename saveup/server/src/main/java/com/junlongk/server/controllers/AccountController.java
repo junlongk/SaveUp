@@ -70,7 +70,6 @@ public class AccountController {
 
         if (opt.isPresent()) {
             accounts = opt.get();
-            System.out.println(accounts);
             accounts.forEach(a -> arrBuilder.add(Utils.accountToJson(a)));
 
             return ResponseEntity
@@ -103,8 +102,6 @@ public class AccountController {
             accounts = opt.get().stream()
                     .map(Account::getAccountId)
                     .collect(Collectors.toList());
-
-            System.out.println(accounts);
         }
 
         if (!accounts.contains(accountId)) {

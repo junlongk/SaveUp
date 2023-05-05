@@ -1,4 +1,9 @@
-<h1>Welcome to SaveUp!</h1>
+<div class="flex justify-content-around align-items-center px-6">
+  <h1>SaveUp</h1>
+  <div class="flex justify-content-evenly gap-5">
+      <p-button label="Log In" icon="pi pi-sign-in" (click)="goToLogin()"></p-button>
+      <p-button label="Sign Up" icon="pi pi-user-plus"(click)="goToSignup()"></p-button>
+  </div>
+</div>
 
-<button type="button" (click)="goToLogin()">Log In</button>
-<button type="button" (click)="goToSignup()">Sign Up</button>
+<div id="bg-image"></div>
