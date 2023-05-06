@@ -1,0 +1,13 @@
+.accounts-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
+  padding: 10px;
+}
+
+.accounts-header span {
+  font-size: 28px;
+  font-weight: bolder;
+}

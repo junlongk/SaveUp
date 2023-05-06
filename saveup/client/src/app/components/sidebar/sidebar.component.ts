@@ -11,11 +11,14 @@ import {JwtHelperService} from "@auth0/angular-jwt";
 })
 export class SidebarComponent implements OnInit {
 
+  userFirstName!: string;
+
   constructor(private authSvc: AuthService,
               private router: Router,
               private jwtHelperSvc: JwtHelperService) {
   }
   ngOnInit():void {
+    this.userFirstName = this.getFirstName();
   }
 
   logOut() {
@@ -23,8 +26,9 @@ export class SidebarComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  // getFirstName() {
-  //   const jwtToken = localStorage.getItem('token');
-  //   this.jwtHelperSvc.decodeToken(jwtToken);
-  // }
+  getFirstName(): string {
+    const jwtToken = localStorage.getItem('token');
+    // @ts-ignore
+    return this.jwtHelperSvc.decodeToken(jwtToken)['firstName'];
+  }
 }

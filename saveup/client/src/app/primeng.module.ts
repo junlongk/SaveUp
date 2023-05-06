@@ -1,14 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { TabMenuModule } from "primeng/tabmenu";
 import { RippleModule } from "primeng/ripple";
 import { ButtonModule } from "primeng/button";
-import {CardModule} from "primeng/card";
-import {ToolbarModule} from "primeng/toolbar";
 import {InputTextModule} from "primeng/inputtext";
-import {SplitterModule} from "primeng/splitter";
-import {SplitButtonModule} from "primeng/splitbutton";
+import {DividerModule} from "primeng/divider";
+import {CardModule} from "primeng/card";
 
 @NgModule({
   declarations: [],
@@ -17,15 +14,11 @@ import {SplitButtonModule} from "primeng/splitbutton";
   ],
   exports: [
     BrowserAnimationsModule,
-    TabMenuModule,
     RippleModule,
     ButtonModule,
-    CardModule,
-    ToolbarModule,
     InputTextModule,
-    SplitterModule,
-    ToolbarModule,
-    SplitButtonModule
+    DividerModule,
+    CardModule
   ]
 })
 export class PrimengModule { }

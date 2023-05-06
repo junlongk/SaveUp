@@ -1,66 +1,43 @@
 <div class="signup-container">
   <h1>Sign Up</h1>
   <form [formGroup]="form" (ngSubmit)="signUp()">
-    <table>
-      <tr>
-        <td>
+    <div class="field input-container">
           <label for="firstName">First Name:</label>
-        </td>
-        <td>
           <input pInputText
                  type="text"
                  class="p-inputtext-sm"
                  id="firstName"
                  size="30"
                  formControlName="firstName">
-        </td>
-      </tr>
-      <tr>
-        <td>
+    </div>
+    <div class="field input-container">
           <label for="lastName">Last Name:</label>
-        </td>
-        <td>
           <input pInputText
                  type="text"
                  class="p-inputtext-sm"
                  id="lastName"
                  size="30"
                  formControlName="lastName">
-        </td>
-      </tr>
-      <tr>
-        <td>
+    </div>
+    <div class="field input-container">
           <label for="email">Email:</label>
-        </td>
-        <td>
           <input pInputText
                  type="email"
                  class="p-inputtext-sm"
                  id="email" size="30"
                  formControlName="email">
-        </td>
-      </tr>
-      <tr>
-        <td>
+    </div>
+    <div class="field input-container">
           <label for="password">Password:</label>
-        </td>
-        <td>
           <input pInputText
                  type="password"
                  class="p-inputtext-sm"
                  id="password"
                  size="30"
                  formControlName="password">
-        </td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>
-          <p-button type="submit"
-                    [disabled]="form.invalid"
-                    styleClass="p-button-outlined">Sign up!</p-button>
-        </td>
-      </tr>
-    </table>
+    </div>
+    <p-button type="submit"
+              [disabled]="form.invalid"
+              styleClass="p-button-outlined">Sign up!</p-button>
   </form>
 </div>

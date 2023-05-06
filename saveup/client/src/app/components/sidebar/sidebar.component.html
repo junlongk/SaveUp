@@ -1,6 +1,6 @@
-<div class="flex flex-column">
-  <div class="flex flex-column align-items-center user-container">
-    <p>Welcome user!</p>
+<div class="sidebar-container">
+  <div class="sidebar-user">
+    <p>Welcome {{ userFirstName }}!</p>
     <p-button label="Sign out"
               icon="pi pi-sign-out"
               styleClass="p-button-outlined p-button-sm"
@@ -8,19 +8,29 @@
     </p-button>
   </div>
 
-  <div class="flex flex-column align-items-center">
-    <p-button [routerLink]="['/user/budgets']"
-              routerLinkActive="active"
-              label="Budgets"
-              styleClass="p-button-text p-button-lg"></p-button>
-    <p-button [routerLink]="['/user/transactions']"
-              routerLinkActive="active"
-              label="Transactions"
-              styleClass="p-button-text p-button-lg"></p-button>
-    <p-button [routerLink]="['/user/accounts']"
-              routerLinkActive="active"
-              label="Accounts"
-              styleClass="p-button-text p-button-lg"></p-button>
+  <div class="sidebar-links">
+<!--    <p-button [routerLink]="['/user/budgets']"-->
+<!--              routerLinkActive="active"-->
+<!--              label="Budgets"-->
+<!--              styleClass="p-button-text p-button-lg"></p-button>-->
+<!--    <p-button [routerLink]="['/user/transactions']"-->
+<!--              routerLinkActive="active"-->
+<!--              label="Transactions"-->
+<!--              styleClass="p-button-text p-button-lg"></p-button>-->
+<!--    <p-button [routerLink]="['/user/accounts']"-->
+<!--              routerLinkActive="active"-->
+<!--              label="Accounts"-->
+<!--              styleClass="p-button-text p-button-lg"></p-button>-->
+
+    <a [routerLink]="['/user/budgets']" routerLinkActive="active">
+      <i class="pi pi-book"></i> Budgets
+    </a>
+    <a [routerLink]="['/user/transactions']" routerLinkActive="active">
+      <i class="pi pi-money-bill"></i> Transactions
+    </a>
+    <a [routerLink]="['/user/accounts']" routerLinkActive="active">
+      <i class="pi pi-wallet"></i> Accounts
+    </a>
   </div>
 
 </div>
