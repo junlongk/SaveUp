@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {User} from "../../models/User";
-import {JwtAuthService} from "../../services/jwt-auth.service";
+import {AuthService} from "../../auth/auth.service";
 import {JwtHelperService} from "@auth0/angular-jwt";
 
 @Component({
@@ -15,7 +15,7 @@ export class SignupComponent implements OnInit {
   form!: FormGroup;
 
   constructor(private fb: FormBuilder,
-              private jwtAuthSvc: JwtAuthService,
+              private authSvc: AuthService,
               private router: Router,
               private jwtHelperSvc: JwtHelperService) { }
 
@@ -36,7 +36,7 @@ export class SignupComponent implements OnInit {
     const userData = this.form.value as User;
     console.info('>>> user: ', userData);
 
-    this.jwtAuthSvc.signupUser(userData)
+    this.authSvc.signupUser(userData)
       .then(result => {
         const jwtToken = result.token;
         console.info('>>> jwtToken: ', jwtToken);

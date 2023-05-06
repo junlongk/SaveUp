@@ -46,7 +46,7 @@ public class JwtService {
     }
 
     public String generateToken(
-            Map<String, Object> extraClaims,
+            Map<String, String> extraClaims,
             UserDetails userDetails
     ) {
         return Jwts.builder()

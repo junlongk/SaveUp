@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {MenuItem} from "primeng/api";
+import {AuthService} from "../../auth/auth.service";
+import {Router} from "@angular/router";
+import {JwtHelperService} from "@auth0/angular-jwt";
 
 @Component({
   selector: 'app-sidebar',
@@ -7,14 +10,21 @@ import {MenuItem} from "primeng/api";
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
-  items!: MenuItem[];
 
+  constructor(private authSvc: AuthService,
+              private router: Router,
+              private jwtHelperSvc: JwtHelperService) {
+  }
   ngOnInit():void {
-    this.items = [
-      { label: 'Budgets', icon: '', routerLink: 'budgets'},
-      { label: 'Transactions', icon: '', routerLink: 'transactions' },
-      { label: 'Account', icon: '', routerLink: 'accounts' }
-    ];
   }
 
+  logOut() {
+    this.authSvc.logoutUser();
+    this.router.navigate(['/login']);
+  }
+
+  // getFirstName() {
+  //   const jwtToken = localStorage.getItem('token');
+  //   this.jwtHelperSvc.decodeToken(jwtToken);
+  // }
 }

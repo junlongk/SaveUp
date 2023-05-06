@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {User} from "../../models/User";
 import {UserLogin} from "../../models/UserLogin";
-import {JwtAuthService} from "../../services/jwt-auth.service";
+import {AuthService} from "../../auth/auth.service";
 import {JwtHelperService} from "@auth0/angular-jwt";
 
 @Component({
@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
   form!: FormGroup;
 
   constructor(private fb: FormBuilder,
-              private jwtAuthSvc: JwtAuthService,
+              private authSvc: AuthService,
               private router: Router,
               private jwtHelperSvc: JwtHelperService) { }
 
@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
     const userLoginData = this.form.value as UserLogin;
     console.info('>>> user: ', userLoginData);
 
-    this.jwtAuthSvc.loginUser(userLoginData)
+    this.authSvc.loginUser(userLoginData)
       .then(result => {
         const jwtToken = result.token;
         console.info('>>> jwtToken: ', jwtToken);
@@ -52,5 +52,9 @@ export class LoginComponent implements OnInit {
           // TODO - ask user to try again
         }
       });
+  }
+
+  goToSignup() {
+    this.router.navigate(['/signup']);
   }
 }

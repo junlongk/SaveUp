@@ -8,7 +8,7 @@ import {JwtHelperService} from "@auth0/angular-jwt";
 @Injectable({
   providedIn: 'root'
 })
-export class JwtAuthService {
+export class AuthService {
 
   private REGISTER_URL = "/api/auth/register";
   private LOGIN_URL = "/api/auth/login";

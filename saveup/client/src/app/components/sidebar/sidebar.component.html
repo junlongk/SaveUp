@@ -1,3 +1,26 @@
-<div pRipple class="p-card">
-<p-tabMenu [model]="items"></p-tabMenu>
+<div class="flex flex-column">
+  <div class="flex flex-column align-items-center user-container">
+    <p>Welcome user!</p>
+    <p-button label="Sign out"
+              icon="pi pi-sign-out"
+              styleClass="p-button-outlined p-button-sm"
+              (click)="logOut()">
+    </p-button>
+  </div>
+
+  <div class="flex flex-column align-items-center">
+    <p-button [routerLink]="['/user/budgets']"
+              routerLinkActive="active"
+              label="Budgets"
+              styleClass="p-button-text p-button-lg"></p-button>
+    <p-button [routerLink]="['/user/transactions']"
+              routerLinkActive="active"
+              label="Transactions"
+              styleClass="p-button-text p-button-lg"></p-button>
+    <p-button [routerLink]="['/user/accounts']"
+              routerLinkActive="active"
+              label="Accounts"
+              styleClass="p-button-text p-button-lg"></p-button>
+  </div>
+
 </div>

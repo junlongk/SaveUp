@@ -7,6 +7,8 @@ import { ButtonModule } from "primeng/button";
 import {CardModule} from "primeng/card";
 import {ToolbarModule} from "primeng/toolbar";
 import {InputTextModule} from "primeng/inputtext";
+import {SplitterModule} from "primeng/splitter";
+import {SplitButtonModule} from "primeng/splitbutton";
 
 @NgModule({
   declarations: [],
@@ -20,7 +22,10 @@ import {InputTextModule} from "primeng/inputtext";
     ButtonModule,
     CardModule,
     ToolbarModule,
-    InputTextModule
+    InputTextModule,
+    SplitterModule,
+    ToolbarModule,
+    SplitButtonModule
   ]
 })
 export class PrimengModule { }

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -13,9 +13,15 @@ import { AccountsComponent } from './components/accounts/accounts.component';
 import { UserPageComponent } from './components/user-page/user-page.component';
 import { ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
-import { JwtAuthService } from "./services/jwt-auth.service";
+import { AuthService } from "./auth/auth.service";
 import { JwtModule } from "@auth0/angular-jwt";
 import { PrimengModule } from "./primeng.module";
+import { PrimeNGConfig } from "primeng/api";
+import {AccountService} from "./services/account.service";
+
+const initializeAppFactory = (primeConfig: PrimeNGConfig) => () => {
+  primeConfig.ripple = true;
+};
 
 @NgModule({
   declarations: [
@@ -43,7 +49,15 @@ import { PrimengModule } from "./primeng.module";
     }),
     PrimengModule
   ],
-  providers: [ JwtAuthService ],
+  providers: [ AuthService,
+               AccountService,
+                {
+                  provide: APP_INITIALIZER,
+                  useFactory: initializeAppFactory,
+                  deps: [PrimeNGConfig],
+                  multi: true,
+                }
+              ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,4 +1,4 @@
-<p-card class="flex align-items-center justify-content-center">
+<div class="login-container">
   <h1>Log In</h1>
   <form [formGroup]="form" (ngSubmit)="logIn()">
     <table>
@@ -7,7 +7,12 @@
           <label for="email">Email:</label>
         </td>
         <td>
-          <input pInputText type="email" class="p-inputtext-sm" id="email" size="30" formControlName="email">
+          <input pInputText
+                 type="email"
+                 class="p-inputtext-sm"
+                 id="email"
+                 size="30"
+                 formControlName="email">
         </td>
       </tr>
       <tr>
@@ -15,16 +20,32 @@
           <label for="password">Password:</label>
         </td>
         <td>
-          <input pInputText type="password" class="p-inputtext-sm" id="password" size="30" formControlName="password">
+          <input pInputText
+                 type="password"
+                 class="p-inputtext-sm"
+                 id="password" size="30"
+                 formControlName="password">
         </td>
       </tr>
       <tr>
         <td></td>
         <td>
-          <p-button type="submit" [disabled]="form.invalid">Log in</p-button>
+          <p-button type="submit"
+                    [disabled]="form.invalid"
+                    styleClass="p-button-outlined">Log in</p-button>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <span>Not a user yet?</span>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <span>Click here to <a [routerLink]="['/signup']">Sign Up</a></span>
         </td>
       </tr>
     </table>
   </form>
-</p-card>
+</div>
 

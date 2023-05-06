@@ -8,6 +8,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -47,7 +50,11 @@ public class AuthService {
 
         userRepo.addUser(user);
 
-        String jwtToken = jwtService.generateToken(user);
+        Map<String, String> extraJwtClaims = Map.of(
+                "email", user.getEmail(),
+                "firstName", user.getFirstName());
+
+        String jwtToken = jwtService.generateToken(extraJwtClaims, user);
 
         logger.info(">>> registered successful!\n");
         logger.info(">>> register jwt: %s\n".formatted(jwtToken));
@@ -66,7 +73,11 @@ public class AuthService {
                 )
         );
 
-        String jwtToken = jwtService.generateToken(user);
+        Map<String, String> extraJwtClaims = Map.of(
+                "email", user.getEmail(),
+                "firstName", user.getFirstName());
+
+        String jwtToken = jwtService.generateToken(extraJwtClaims, user);
 
         logger.info(">>> login user found!\n%s\n".formatted(user.toString()));
         logger.info(">>> login jwt: %s\n".formatted(jwtToken));

@@ -1,9 +1,16 @@
-<div class="flex justify-content-around align-items-center px-6">
-  <h1>SaveUp</h1>
-  <div class="flex justify-content-evenly gap-5">
-      <p-button label="Log In" icon="pi pi-sign-in" (click)="goToLogin()"></p-button>
-      <p-button label="Sign Up" icon="pi pi-user-plus"(click)="goToSignup()"></p-button>
+<div class="main-topbar-container">
+  <span class="main-topbar-logo">SaveUp</span>
+  <div class="main-topbar-auth">
+      <p-button label="Log In"
+                icon="pi pi-sign-in"
+                styleClass="p-button-text"
+                (click)="goToLogin()"></p-button>
+      <p-button label="Sign Up"
+                icon="pi pi-user-plus"
+                styleClass="p-button-text"
+                (click)="goToSignup()"></p-button>
   </div>
 </div>
 
-<div id="bg-image"></div>
+<div class="bg-image">
+</div>
