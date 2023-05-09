@@ -14,7 +14,7 @@ export class AuthService {
   private LOGIN_URL = "/api/auth/login";
 
   constructor(private httpClient: HttpClient,
-              private jwtHelper: JwtHelperService) { }
+              private jwtHelperSvc: JwtHelperService) { }
 
 
   signupUser(user: User): Promise<any> {
@@ -44,7 +44,16 @@ export class AuthService {
   isLoggedIn(): boolean {
     const jwtToken = localStorage.getItem('token');
 
-    return (!!jwtToken && !this.jwtHelper.isTokenExpired(jwtToken));
+    return (!!jwtToken && !this.jwtHelperSvc.isTokenExpired(jwtToken));
   }
 
+  getUserId(): string {
+    const jwtToken = localStorage.getItem('token');
+    return this.jwtHelperSvc.decodeToken(jwtToken as any)['sub'];
+  }
+
+  getFirstName(): string {
+    const jwtToken = localStorage.getItem('token');
+    return this.jwtHelperSvc.decodeToken(jwtToken as any)['firstName'];
+  }
 }

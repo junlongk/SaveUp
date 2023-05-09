@@ -6,6 +6,10 @@ import { ButtonModule } from "primeng/button";
 import {InputTextModule} from "primeng/inputtext";
 import {DividerModule} from "primeng/divider";
 import {CardModule} from "primeng/card";
+import {TableModule} from "primeng/table";
+import {AccordionModule} from "primeng/accordion";
+import {PanelModule} from "primeng/panel";
+import {OverlayModule} from "primeng/overlay";
 
 @NgModule({
   declarations: [],
@@ -18,7 +22,9 @@ import {CardModule} from "primeng/card";
     ButtonModule,
     InputTextModule,
     DividerModule,
-    CardModule
+    CardModule,
+    TableModule,
+    OverlayModule
   ]
 })
 export class PrimengModule { }

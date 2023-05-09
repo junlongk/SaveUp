@@ -19,6 +19,7 @@ import { PrimengModule } from "./primeng.module";
 import { PrimeNGConfig } from "primeng/api";
 import {AccountService} from "./services/account.service";
 
+// used for enabling PrimeNG ripple effects throughout the app
 const initializeAppFactory = (primeConfig: PrimeNGConfig) => () => {
   primeConfig.ripple = true;
 };

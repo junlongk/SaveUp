@@ -14,21 +14,14 @@ export class SidebarComponent implements OnInit {
   userFirstName!: string;
 
   constructor(private authSvc: AuthService,
-              private router: Router,
-              private jwtHelperSvc: JwtHelperService) {
+              private router: Router) {
   }
   ngOnInit():void {
-    this.userFirstName = this.getFirstName();
+    this.userFirstName = this.authSvc.getFirstName();
   }
 
   logOut() {
     this.authSvc.logoutUser();
     this.router.navigate(['/login']);
-  }
-
-  getFirstName(): string {
-    const jwtToken = localStorage.getItem('token');
-    // @ts-ignore
-    return this.jwtHelperSvc.decodeToken(jwtToken)['firstName'];
   }
 }

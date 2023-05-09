@@ -30,7 +30,7 @@ public class AccountController {
     @Autowired
     private AccountService accountSvc;
 
-    @PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<String> addAccount(
             Authentication authentication,
@@ -50,17 +50,17 @@ public class AccountController {
                 .body(resp.toString());
     }
 
-    @GetMapping(path = "/")
+    @GetMapping(path = "")
     @ResponseBody
     public ResponseEntity<String> getAccounts(
             Authentication authentication,
-            @RequestBody Map<String, String> user) {
-        String userId = authentication.getName();
+            @RequestParam String userId) {
+        String userIdFromAuth = authentication.getName();
         List<Account> accounts;
         JsonArrayBuilder arrBuilder = Json.createArrayBuilder();
 
         // Check if requested userId belongs to current user
-        if (!userId.equals(user.get("userId"))) {
+        if (!userIdFromAuth.equals(userId)) {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
                     .body("UserId does not belong to current user!");
@@ -118,7 +118,7 @@ public class AccountController {
                         .formatted(accountId));
     }
 
-    @PostMapping(path = "transfer")
+    @PostMapping(path = "/transfer")
     @ResponseBody
     public ResponseEntity<String> transfer(
             Authentication authentication,

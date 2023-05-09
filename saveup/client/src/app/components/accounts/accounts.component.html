@@ -1,9 +1,48 @@
-<div class="accounts-header">
-  <span>Accounts</span>
-  <p-button label="New"
-            icon="pi pi-plus"
-            styleClass="p-button-outlined p-button-sm">
-  </p-button>
-</div>
-<p-divider></p-divider>
+<div>
+  <div class="accounts-header">
+    <span>Accounts</span>
+    <p-button label="New"
+              icon="pi pi-plus"
+              styleClass="p-button-outlined p-button-sm">
+    </p-button>
+  </div>
 
+  <p-divider></p-divider>
+
+  <div *ngIf="accounts.length <= 0">
+    <p>You do not have any account yet.</p>
+    <p>Please create a new account using the "New" button above.</p>
+  </div>
+
+  <div *ngIf="accounts.length > 0">
+    <p-card [style]="{ width: '400px' }">
+      <p-table [value]="accounts"
+               styleClass="p-datatable-striped"
+               [tableStyle]="{ 'width': '370px' }">
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 220px">Name</th>
+            <th style="width: 120px">Balance</th>
+            <th style="width: 30px"></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-account>
+          <tr>
+            <td>
+              <a [routerLink]="['/user/accounts', account.accountId]">
+                {{ account.accountName }}
+              </a>
+            </td>
+            <td>{{ account.balance | number: '1.2-2' }}</td>
+            <td>
+              <p-button icon="pi pi-ellipsis-v"
+                        styleClass="p-button-text p-button-sm"
+                        (click)="toggle()"></p-button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+
+</div>
