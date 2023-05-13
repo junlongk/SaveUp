@@ -46,6 +46,14 @@ export class AccountService {
       .put<Account>(this.ACCOUNTS_URL + "/modify", body, { headers }));
   }
 
+  deleteAccount(accountId: string): Promise<any> {
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json; charset=utf-8');
+
+    return lastValueFrom(this.httpClient
+      .delete<Account>(this.ACCOUNTS_URL + "/delete/" + accountId, { headers }));
+  }
+
   // FOR REFERENCE ONLY - DELETE AFTER DONE
   //
   // signupUser(user: User): Promise<any> {

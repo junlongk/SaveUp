@@ -37,6 +37,10 @@ public class AccountService {
         return accountRepo.modifyAccount(accountName, balance, accountId);
     }
 
+    public boolean deleteAccount(String accountId) {
+        return accountRepo.deleteAccount(accountId);
+    }
+
     @Transactional(rollbackFor = TransferException.class)
     public void updateBalanceByTransfer(BigDecimal amount,
                                  String fromAccountId,

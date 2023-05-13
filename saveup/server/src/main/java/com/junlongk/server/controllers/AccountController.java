@@ -137,6 +137,46 @@ public class AccountController {
                 .body(resp.toString());
     }
 
+    @DeleteMapping(path = "/delete/{accountId}")
+    @ResponseBody
+    public ResponseEntity<String> deleteAccount(
+            Authentication authentication,
+            @PathVariable String accountId) {
+
+        // Check if accountId belongs to the current user
+        String userId = authentication.getName();
+        List<String> accounts = new LinkedList<>();
+        Optional<List<Account>> opt = accountSvc.getAccountsByUserId(userId);
+
+        if (opt.isPresent()) {
+            accounts = opt.get().stream()
+                    .map(Account::getAccountId)
+                    .collect(Collectors.toList());
+        }
+
+        if (!accounts.contains(accountId)) {
+            JsonObject resp = Json.createObjectBuilder()
+                    .add("message",
+                            "Account ID %s does not belong to current user!"
+                                    .formatted(accountId))
+                    .build();
+
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(resp.toString());
+        }
+
+        accountSvc.deleteAccount(accountId);
+
+        JsonObject resp = Json.createObjectBuilder()
+                .add("message", "Account ID: %s deleted!".formatted(accountId))
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(resp.toString());
+    }
+
     @PostMapping(path = "/transfer")
     @ResponseBody
     public ResponseEntity<String> transfer(

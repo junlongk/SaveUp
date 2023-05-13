@@ -29,6 +29,11 @@ public class AccountRepository {
             UPDATE user_account SET account_name = ?, balance = ? WHERE account_id = ?
             """;
 
+    // Delete account
+    public static final String SQL_DELETE_ACCOUNT = """
+            DELETE FROM user_account WHERE account_id = ?
+            """;
+
     // Update "from" account balance for transfers
     public static final String SQL_UPDATE_FROM_ACCOUNT_BALANCE = """
             UPDATE user_account SET balance = balance - ? WHERE account_id = ?
@@ -77,6 +82,18 @@ public class AccountRepository {
         });
 
         return updated > 0;
+    }
+
+    public boolean deleteAccount(String accountId) {
+
+        int deleted = jdbcTemplate.update(SQL_DELETE_ACCOUNT, new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps) throws SQLException {
+                ps.setString(1, accountId);
+            }
+        });
+
+        return deleted > 0;
     }
 
     public boolean updateFromBalance(BigDecimal amount, String fromAccountId) {

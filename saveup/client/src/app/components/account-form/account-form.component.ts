@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {Account} from "../../models/Account";
-import {AccountService} from "../../services/account.service";
 
 @Component({
   selector: 'app-account-form',
@@ -15,8 +14,7 @@ export class AccountFormComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               public ref: DynamicDialogRef,
-              public config: DynamicDialogConfig,
-              private accountSvc: AccountService) { }
+              public config: DynamicDialogConfig) { }
 
   ngOnInit():void {
     this.form = this.createForm();
@@ -48,13 +46,6 @@ export class AccountFormComponent implements OnInit {
   saveAccount() {
     const account = this.form.value as Account;
     console.info('saving form..: ', account);
-
-    // if (account.accountId == '') {
-    //   this.accountSvc.addAccount(account)
-    //     .then( data => {
-    //       console.info('>>> msg from server: ', data.message);
-    //     });
-    // }
 
     // pass back account details to parent component (DynamicDialog)
     this.ref.close(account);

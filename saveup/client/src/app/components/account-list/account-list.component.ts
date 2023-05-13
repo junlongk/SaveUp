@@ -56,7 +56,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
         label: 'Delete',
         icon: 'pi pi-trash',
         command: () => {
-          this.delete(this.selectedAccount);
+          this.delete(this.selectedAccount.accountId);
         }
       }
     ];
@@ -68,6 +68,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
 
   private edit(account: Account) {
     console.info('inside account-list edit button: ',account);
+
     this.ref = this.dialogSvc.open(AccountFormComponent, {
       data: account, // pass in account details to form component
       header: 'Edit account details',
@@ -80,22 +81,34 @@ export class AccountListComponent implements OnInit, OnDestroy {
     this.ref.onClose.subscribe((account: Account) => {
       console.info('subscribed account: ', account);
 
-      this.accountSvc.modifyAccount(account)
-        .then( data => {
-          console.info('>>> msg from server: ', data.message);
+      if (account != null) {
+        this.accountSvc.modifyAccount(account)
+          .then( data => {
+            console.info('>>> msg from server: ', data.message);
 
-          // refresh account list after submitting form
-          this.accountSvc.getAccounts(this.userId)
-            .then(data => {
-              this.accounts = data;
-              console.info('>>> refreshed accounts: ', this.accounts);
-            });
-        });
+            // refresh account list after submitting form
+            this.accountSvc.getAccounts(this.userId)
+              .then(data => {
+                this.accounts = data;
+                console.info('>>> refreshed accounts: ', this.accounts);
+              });
+          });
+      }
     });
   }
 
-  private delete(account: Account) {
+  private delete(accountId: string) {
+    this.accountSvc.deleteAccount(accountId)
+      .then(data => {
+        console.info('>>> msg from server: ', data.message);
 
+        // refresh account list after submitting form
+        this.accountSvc.getAccounts(this.userId)
+          .then(data => {
+            this.accounts = data;
+            console.info('>>> refreshed accounts: ', this.accounts);
+          });
+      });
   }
 
   create() {
@@ -110,17 +123,19 @@ export class AccountListComponent implements OnInit, OnDestroy {
     this.ref.onClose.subscribe((account: Account) => {
       console.info('subscribed account: ', account);
 
-      this.accountSvc.addAccount(account)
-        .then( data => {
-          console.info('>>> msg from server: ', data.message);
+      if (account != null) {
+        this.accountSvc.addAccount(account)
+          .then( data => {
+            console.info('>>> msg from server: ', data.message);
 
-          // refresh account list after submitting form
-          this.accountSvc.getAccounts(this.userId)
-            .then(data => {
-              this.accounts = data;
-              console.info('>>> refreshed accounts: ', this.accounts);
-            });
-        });
+            // refresh account list after submitting form
+            this.accountSvc.getAccounts(this.userId)
+              .then(data => {
+                this.accounts = data;
+                console.info('>>> refreshed accounts: ', this.accounts);
+              });
+          });
+      }
     });
   }
 
