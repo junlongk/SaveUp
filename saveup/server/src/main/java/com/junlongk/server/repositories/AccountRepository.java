@@ -24,9 +24,9 @@ public class AccountRepository {
             SELECT * FROM user_account WHERE user_id = ?
             """;
 
-    // Modify account balance directly
-    public static final String SQL_MODIFY_ACCOUNT_BALANCE = """
-            UPDATE user_account SET balance = ? WHERE account_id = ?
+    // Modify account
+    public static final String SQL_MODIFY_ACCOUNT = """
+            UPDATE user_account SET account_name = ?, balance = ? WHERE account_id = ?
             """;
 
     // Update "from" account balance for transfers
@@ -65,13 +65,14 @@ public class AccountRepository {
             return Optional.of(accounts);
     }
 
-    public boolean modifyBalance(BigDecimal amount, String accountId) {
+    public boolean modifyAccount(String accountName, BigDecimal balance, String accountId) {
 
-        int updated = jdbcTemplate.update(SQL_MODIFY_ACCOUNT_BALANCE, new PreparedStatementSetter() {
+        int updated = jdbcTemplate.update(SQL_MODIFY_ACCOUNT, new PreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps) throws SQLException {
-                ps.setBigDecimal(1, amount);
-                ps.setString(2, accountId);
+                ps.setString(1, accountName);
+                ps.setBigDecimal(2, balance);
+                ps.setString(3, accountId);
             }
         });
 

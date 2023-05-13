@@ -3,7 +3,8 @@
     <span>Accounts</span>
     <p-button label="New"
               icon="pi pi-plus"
-              styleClass="p-button-outlined p-button-sm">
+              styleClass="p-button-outlined p-button-sm"
+              (click)="create()">
     </p-button>
   </div>
 
@@ -33,7 +34,7 @@
             <td>
               <p-button icon="pi pi-ellipsis-v"
                         styleClass="p-button-text p-button-sm"
-                        (click)="selectedAccount = account.accountId;
+                        (click)="selectedAccount = account;
                         menu.toggle($event)"></p-button>
               <p-menu #menu
                       [model]="menuItems"

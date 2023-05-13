@@ -26,6 +26,26 @@ export class AccountService {
       .get<Account[]>(this.ACCOUNTS_URL, { params, headers }));
   }
 
+  addAccount(account: Account): Promise<any> {
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json; charset=utf-8');
+
+    const body = JSON.stringify(account);
+
+    return lastValueFrom(this.httpClient
+      .post<Account>(this.ACCOUNTS_URL, body, { headers }));
+  }
+
+  modifyAccount(account: Account): Promise<any> {
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json; charset=utf-8');
+
+    const body = JSON.stringify(account);
+
+    return lastValueFrom(this.httpClient
+      .put<Account>(this.ACCOUNTS_URL + "/modify", body, { headers }));
+  }
+
   // FOR REFERENCE ONLY - DELETE AFTER DONE
   //
   // signupUser(user: User): Promise<any> {

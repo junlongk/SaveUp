@@ -41,7 +41,8 @@ public class AccountController {
                 account.getAccountName(), account.getBalance(), userId);
 
         JsonObject resp = Json.createObjectBuilder()
-                .add("message", "Account '%s' (%s) created successfully!"
+                .add("message",
+                        "Account '%s' (%s) created successfully!"
                         .formatted(account.getAccountName(), accountId))
                 .build();
 
@@ -61,9 +62,13 @@ public class AccountController {
 
         // Check if requested userId belongs to current user
         if (!userIdFromAuth.equals(userId)) {
+            JsonObject resp = Json.createObjectBuilder()
+                    .add("message", "UserId does not belong to current user!")
+                    .build();
+
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
-                    .body("UserId does not belong to current user!");
+                    .body(resp.toString());
         }
 
         Optional<List<Account>> opt = accountSvc.getAccountsByUserId(userId);
@@ -77,20 +82,24 @@ public class AccountController {
                     .body(arrBuilder.build().toString());
         }
 
+        JsonObject resp = Json.createObjectBuilder()
+                .add("message", "No accounts found under %s".formatted(userId))
+                .build();
+
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body("No accounts found under %s"
-                        .formatted(userId));
+                .body(resp.toString());
     }
 
-    @PutMapping(path = "/modifybalance")
+    @PutMapping(path = "/modify")
     @ResponseBody
-    public ResponseEntity<String> modifyBalance(
+    public ResponseEntity<String> modifyAccount(
             Authentication authentication,
             @RequestBody Map<String, String> modifyDetails) {
 
         // Get details from request body
-        BigDecimal amount = BigDecimal.valueOf(Double.parseDouble(modifyDetails.get("amount")));
+        String accountName = modifyDetails.get("accountName");
+        BigDecimal balance = BigDecimal.valueOf(Double.parseDouble(modifyDetails.get("balance")));
         String accountId = modifyDetails.get("accountId");
 
         // Check if accountId belongs to the currentUser
@@ -105,17 +114,27 @@ public class AccountController {
         }
 
         if (!accounts.contains(accountId)) {
+
+            JsonObject resp = Json.createObjectBuilder()
+                    .add("message",
+                            "Account ID %s does not belong to current user!"
+                                    .formatted(accountId))
+                    .build();
+
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
-                    .body("Account ID: %s does not belong to current user!"
-                            .formatted(accountId));
+                    .body(resp.toString());
         }
 
-        accountSvc.modifyBalance(amount, accountId);
+        accountSvc.modifyAccount(accountName, balance, accountId);
+
+        JsonObject resp = Json.createObjectBuilder()
+                .add("message", "Account ID: %s updated!".formatted(accountId))
+                .build();
+
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body("Account ID: %s updated!"
-                        .formatted(accountId));
+                .body(resp.toString());
     }
 
     @PostMapping(path = "/transfer")
@@ -142,16 +161,26 @@ public class AccountController {
         }
 
         if (!accounts.contains(fromAccountId) || !accounts.contains(toAccountId)) {
+            JsonObject resp = Json.createObjectBuilder()
+                    .add("message",
+                            "One of the account does not belong to current user!")
+                    .build();
+
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
-                    .body("One of the account does not belong to current user!");
+                    .body(resp.toString());
         }
 
         accountSvc.updateBalanceByTransfer(amount,
                 fromAccountId, toAccountId);
+
+        JsonObject resp = Json.createObjectBuilder()
+                .add("message", "Transfer updated!")
+                .build();
+
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body("Transfer updated!");
+                .body(resp.toString());
     }
 }
 

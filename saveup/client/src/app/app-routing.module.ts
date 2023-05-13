@@ -6,9 +6,9 @@ import {SignupComponent} from "./components/signup/signup.component";
 import {UserPageComponent} from "./components/user-page/user-page.component";
 import {TransactionsComponent} from "./components/transactions/transactions.component";
 import {BudgetsComponent} from "./components/budgets/budgets.component";
-import {AccountListComponent} from "./components/accounts/account-list.component";
+import {AccountListComponent} from "./components/account-list/account-list.component";
 import {AuthGuard} from "./auth/auth.guard";
-import {AccountDetailComponent} from "./components/accounts/account-detail.component";
+import {AccountDetailComponent} from "./components/account-detail/account-detail.component";
 
 const routes: Routes = [
   { path: '', component: MainPageComponent },

@@ -1,0 +1,26 @@
+<div class="account-form-container">
+  <form [formGroup]="form" (ngSubmit)="saveAccount()">
+    <div class="field input-container">
+      <label for="accountName">Name</label>
+      <input pInputText
+             type="text"
+             class="p-inputtext-sm"
+             id="accountName"
+             size="30"
+             formControlName="accountName" />
+    </div>
+    <div class="field input-container">
+      <label for="balance">Balance</label>
+      <input pInputText
+             type="number"
+             class="p-inputtext-sm"
+             id="balance"
+             size="30"
+             formControlName="balance" />
+    </div>
+    <input type="hidden" formControlName="accountId" />
+    <p-button type="submit"
+              [disabled]="form.invalid"
+              styleClass="p-button-outlined">Save</p-button>
+  </form>
+</div>

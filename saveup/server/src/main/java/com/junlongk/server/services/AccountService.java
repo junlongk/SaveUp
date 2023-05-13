@@ -33,8 +33,8 @@ public class AccountService {
         return accountRepo.getAccountsByUserId(userId);
     }
 
-    public boolean modifyBalance(BigDecimal amount, String accountId) {
-        return accountRepo.modifyBalance(amount, accountId);
+    public boolean modifyAccount(String accountName, BigDecimal balance, String accountId) {
+        return accountRepo.modifyAccount(accountName, balance, accountId);
     }
 
     @Transactional(rollbackFor = TransferException.class)
