@@ -9,7 +9,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { MainPageComponent } from './components/main-page/main-page.component';
 import { BudgetsComponent } from './components/budgets/budgets.component';
 import { TransactionsComponent } from './components/transactions/transactions.component';
-import { AccountsComponent } from './components/accounts/accounts.component';
+import { AccountListComponent } from './components/accounts/account-list.component';
 import { UserPageComponent } from './components/user-page/user-page.component';
 import { ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
@@ -18,6 +18,7 @@ import { JwtModule } from "@auth0/angular-jwt";
 import { PrimengModule } from "./primeng.module";
 import { PrimeNGConfig } from "primeng/api";
 import {AccountService} from "./services/account.service";
+import {AccountDetailComponent} from "./components/accounts/account-detail.component";
 
 // used for enabling PrimeNG ripple effects throughout the app
 const initializeAppFactory = (primeConfig: PrimeNGConfig) => () => {
@@ -33,7 +34,8 @@ const initializeAppFactory = (primeConfig: PrimeNGConfig) => () => {
     MainPageComponent,
     BudgetsComponent,
     TransactionsComponent,
-    AccountsComponent,
+    AccountListComponent,
+    AccountDetailComponent,
     UserPageComponent
   ],
   imports: [

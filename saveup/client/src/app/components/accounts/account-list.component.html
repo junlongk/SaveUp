@@ -28,16 +28,17 @@
         </ng-template>
         <ng-template pTemplate="body" let-account>
           <tr>
-            <td>
-              <a [routerLink]="['/user/accounts', account.accountId]">
-                {{ account.accountName }}
-              </a>
-            </td>
-            <td>{{ account.balance | number: '1.2-2' }}</td>
+            <td>{{ account.accountName }}</td>
+            <td>{{ account.balance | currency }}</td>
             <td>
               <p-button icon="pi pi-ellipsis-v"
                         styleClass="p-button-text p-button-sm"
-                        (click)="toggle()"></p-button>
+                        (click)="selectedAccount = account.accountId;
+                        menu.toggle($event)"></p-button>
+              <p-menu #menu
+                      [model]="menuItems"
+                      [popup]="true"
+                      appendTo="body"></p-menu>
             </td>
           </tr>
         </ng-template>

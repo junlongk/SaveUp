@@ -10,6 +10,7 @@ import {TableModule} from "primeng/table";
 import {AccordionModule} from "primeng/accordion";
 import {PanelModule} from "primeng/panel";
 import {OverlayModule} from "primeng/overlay";
+import {MenuModule} from "primeng/menu";
 
 @NgModule({
   declarations: [],
@@ -24,7 +25,8 @@ import {OverlayModule} from "primeng/overlay";
     DividerModule,
     CardModule,
     TableModule,
-    OverlayModule
+    OverlayModule,
+    MenuModule
   ]
 })
 export class PrimengModule { }
