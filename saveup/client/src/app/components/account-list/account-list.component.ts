@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AccountService} from "../../services/account.service";
 import {Account} from "../../models/Account";
 import {AuthService} from "../../auth/auth.service";
-import {MenuItem, MessageService} from "primeng/api";
+import {ConfirmationService, MenuItem, MessageService} from "primeng/api";
 import {Router} from "@angular/router";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {AccountFormComponent} from "../account-form/account-form.component";
@@ -11,7 +11,7 @@ import {AccountFormComponent} from "../account-form/account-form.component";
   selector: 'app-accounts',
   templateUrl: './account-list.component.html',
   styleUrls: ['./account-list.component.css'],
-  providers: [ DialogService, MessageService ]
+  providers: [ DialogService, MessageService, ConfirmationService ]
 })
 export class AccountListComponent implements OnInit, OnDestroy {
   userId!: string;
@@ -23,8 +23,9 @@ export class AccountListComponent implements OnInit, OnDestroy {
   constructor(private accountSvc: AccountService,
               private authSvc: AuthService,
               private router: Router,
-              public dialogSvc: DialogService,
-              public messageSvc: MessageService) { }
+              private dialogSvc: DialogService,
+              private messageSvc: MessageService,
+              private confirmationSvc: ConfirmationService) { }
 
   ngOnInit():void {
     this.userId = this.authSvc.getUserId();
@@ -56,7 +57,8 @@ export class AccountListComponent implements OnInit, OnDestroy {
         label: 'Delete',
         icon: 'pi pi-trash',
         command: () => {
-          this.delete(this.selectedAccount.accountId);
+          // pass in account details for deleting
+          this.delete(this.selectedAccount);
         }
       }
     ];
@@ -87,28 +89,31 @@ export class AccountListComponent implements OnInit, OnDestroy {
             console.info('>>> msg from server: ', data.message);
 
             // refresh account list after submitting form
-            this.accountSvc.getAccounts(this.userId)
-              .then(data => {
-                this.accounts = data;
-                console.info('>>> refreshed accounts: ', this.accounts);
-              });
+            this.refreshAccounts();
           });
+        this.messageSvc.add({ severity: 'success',
+          summary: 'Success', detail: `Edited ${account.accountName}` });
       }
     });
   }
 
-  private delete(accountId: string) {
-    this.accountSvc.deleteAccount(accountId)
-      .then(data => {
-        console.info('>>> msg from server: ', data.message);
-
-        // refresh account list after submitting form
-        this.accountSvc.getAccounts(this.userId)
+  private delete(account: Account) {
+    this.confirmationSvc.confirm({
+      message: 'Please confirm the deletion',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.accountSvc.deleteAccount(account.accountId)
           .then(data => {
-            this.accounts = data;
-            console.info('>>> refreshed accounts: ', this.accounts);
+            console.info('>>> msg from server: ', data.message);
+
+            // refresh account list after deleting
+            this.refreshAccounts();
           });
-      });
+        this.messageSvc.add({ severity: 'success',
+          summary: 'Success', detail: `Deleted ${account.accountName}` });
+      }
+    });
   }
 
   create() {
@@ -129,14 +134,20 @@ export class AccountListComponent implements OnInit, OnDestroy {
             console.info('>>> msg from server: ', data.message);
 
             // refresh account list after submitting form
-            this.accountSvc.getAccounts(this.userId)
-              .then(data => {
-                this.accounts = data;
-                console.info('>>> refreshed accounts: ', this.accounts);
-              });
+            this.refreshAccounts();
           });
+        this.messageSvc.add({ severity: 'success',
+          summary: 'Success', detail: `Added ${account.accountName}` });
       }
     });
+  }
+
+  private refreshAccounts() {
+    this.accountSvc.getAccounts(this.userId)
+      .then(data => {
+        this.accounts = data;
+        console.info('>>> refreshed accounts: ', this.accounts);
+      });
   }
 
   ngOnDestroy():void {

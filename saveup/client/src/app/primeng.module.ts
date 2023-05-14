@@ -7,10 +7,10 @@ import {InputTextModule} from "primeng/inputtext";
 import {DividerModule} from "primeng/divider";
 import {CardModule} from "primeng/card";
 import {TableModule} from "primeng/table";
-import {AccordionModule} from "primeng/accordion";
-import {PanelModule} from "primeng/panel";
 import {OverlayModule} from "primeng/overlay";
 import {MenuModule} from "primeng/menu";
+import {ToastModule} from "primeng/toast";
+import {ConfirmDialogModule} from "primeng/confirmdialog";
 
 @NgModule({
   declarations: [],
@@ -26,7 +26,9 @@ import {MenuModule} from "primeng/menu";
     CardModule,
     TableModule,
     OverlayModule,
-    MenuModule
+    MenuModule,
+    ToastModule,
+    ConfirmDialogModule
   ]
 })
 export class PrimengModule { }
