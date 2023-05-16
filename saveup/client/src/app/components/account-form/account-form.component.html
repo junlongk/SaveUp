@@ -11,12 +11,12 @@
     </div>
     <div class="field input-container">
       <label for="balance">Balance</label>
-      <input pInputText
-             type="number"
-             class="p-inputtext-sm"
+      <p-inputNumber
              id="balance"
-             size="30"
-             formControlName="balance" />
+             mode="decimal"
+             [minFractionDigits]="0"
+             [maxFractionDigits]="2"
+             formControlName="balance"></p-inputNumber>
     </div>
     <input type="hidden" formControlName="accountId" />
     <p-button type="submit"

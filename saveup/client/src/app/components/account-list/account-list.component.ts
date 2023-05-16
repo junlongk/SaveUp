@@ -29,20 +29,15 @@ export class AccountListComponent implements OnInit, OnDestroy {
 
   ngOnInit():void {
     this.userId = this.authSvc.getUserId();
-    this.accountSvc.getAccounts(this.userId)
-      .then(data => {
-        this.accounts = data;
-        console.info('>>> accounts found: ', this.accounts);
-      });
+    this.getAccounts();
 
     this.menuItems = [
       {
         label: 'Details',
         icon: 'pi pi-list',
         command: () => {
-          // pass in accountId for routing
-          this.goToAccountPage(this.selectedAccount.accountId);
-          console.info('>>> navigating to account page:', this.selectedAccount.accountId);
+          // pass in account details for routing
+          this.goToAccountPage(this.selectedAccount);
         }
       },
       {
@@ -64,12 +59,13 @@ export class AccountListComponent implements OnInit, OnDestroy {
     ];
   }
 
-  private goToAccountPage(accountId: string) {
-    this.router.navigate(['/user/accounts', accountId]);
+  private goToAccountPage(account: Account) {
+    // console.info('>>> navigating to account page:', account.accountId);
+    this.router.navigate(['/user/accounts', account.accountId]);
   }
 
   private edit(account: Account) {
-    console.info('inside account-list edit button: ',account);
+    // console.info('inside account-list edit button: ',account);
 
     this.ref = this.dialogSvc.open(AccountFormComponent, {
       data: account, // pass in account details to form component
@@ -89,7 +85,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
             console.info('>>> msg from server: ', data.message);
 
             // refresh account list after submitting form
-            this.refreshAccounts();
+            this.getAccounts();
           });
         this.messageSvc.add({ severity: 'success',
           summary: 'Success', detail: `Edited ${account.accountName}` });
@@ -108,7 +104,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
             console.info('>>> msg from server: ', data.message);
 
             // refresh account list after deleting
-            this.refreshAccounts();
+            this.getAccounts();
           });
         this.messageSvc.add({ severity: 'success',
           summary: 'Success', detail: `Deleted ${account.accountName}` });
@@ -134,7 +130,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
             console.info('>>> msg from server: ', data.message);
 
             // refresh account list after submitting form
-            this.refreshAccounts();
+            this.getAccounts();
           });
         this.messageSvc.add({ severity: 'success',
           summary: 'Success', detail: `Added ${account.accountName}` });
@@ -142,11 +138,12 @@ export class AccountListComponent implements OnInit, OnDestroy {
     });
   }
 
-  private refreshAccounts() {
+  // get list of accounts
+  private getAccounts() {
     this.accountSvc.getAccounts(this.userId)
       .then(data => {
         this.accounts = data;
-        console.info('>>> refreshed accounts: ', this.accounts);
+        console.info('>>> accounts: ', this.accounts);
       });
   }
 

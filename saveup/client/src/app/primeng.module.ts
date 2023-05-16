@@ -11,6 +11,7 @@ import {OverlayModule} from "primeng/overlay";
 import {MenuModule} from "primeng/menu";
 import {ToastModule} from "primeng/toast";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
+import {InputNumberModule} from "primeng/inputnumber";
 
 @NgModule({
   declarations: [],
@@ -22,6 +23,7 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
     RippleModule,
     ButtonModule,
     InputTextModule,
+    InputNumberModule,
     DividerModule,
     CardModule,
     TableModule,

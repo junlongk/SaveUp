@@ -22,7 +22,7 @@ export class AccountFormComponent implements OnInit {
     // get account details when form is in editing mode
     // get data from DynamicDialogConfig as data is passed through config
     if (this.config.data != null) {
-      console.info('inside account-form component: ', this.config.data);
+      // console.info('inside account-form component: ', this.config.data);
       this.account = this.config.data;
 
       const accountNameCtrl = this.form.get('accountName') as FormControl;
@@ -38,14 +38,14 @@ export class AccountFormComponent implements OnInit {
   private createForm(): FormGroup {
     return this.fb.group({
       accountName: this.fb.control<string>('', [Validators.required]),
-      balance: this.fb.control<number>(0, [Validators.required]),
+      balance: this.fb.control<number | null>(null, [Validators.required]),
       accountId: this.fb.control<string>('')
     })
   }
 
   saveAccount() {
     const account = this.form.value as Account;
-    console.info('saving form..: ', account);
+    // console.info('saving form..: ', account);
 
     // pass back account details to parent component (DynamicDialog)
     this.ref.close(account);
