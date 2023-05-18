@@ -1,0 +1,42 @@
+<div class="transactions-header">
+  <span>Transactions</span>
+  <p-button label="New"
+            icon="pi pi-plus"
+            styleClass="p-button-outlined p-button-sm">
+  </p-button>
+</div>
+<p-divider></p-divider>
+
+<div *ngIf="transactions.length <= 0">
+  <p>No transactions found!</p>
+</div>
+
+<div *ngIf="transactions.length > 0">
+  <p-card [style]="{ width: '570px'}">
+    <p-table [value]="transactions"
+             styleClass="p-datatable-striped"
+             [tableStyle]="{ 'width': '540px' }">
+      <ng-template pTemplate="header">
+        <th>Account</th>
+        <th>Date</th>
+        <th>Payee</th>
+        <th>Envelope</th>
+        <th>Memo</th>
+        <th>Outflow</th>
+        <th>Inflow</th>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-transaction>
+        <tr>
+          <td>{{ transaction.accountName }}</td>
+          <td>{{ transaction.date | date: 'dd/MM/yyyy' }}</td>
+          <td>{{ transaction.payee }}</td>
+          <td>{{ transaction.envelopeName }}</td>
+          <td>{{ transaction.memo }}</td>
+          <td>{{ transaction.outflow }}</td>
+          <td>{{ transaction.inflow }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</div>

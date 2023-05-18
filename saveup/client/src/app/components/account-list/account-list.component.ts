@@ -8,7 +8,7 @@ import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {AccountFormComponent} from "../account-form/account-form.component";
 
 @Component({
-  selector: 'app-accounts',
+  selector: 'app-account-list',
   templateUrl: './account-list.component.html',
   styleUrls: ['./account-list.component.css'],
   providers: [ DialogService, MessageService, ConfirmationService ]

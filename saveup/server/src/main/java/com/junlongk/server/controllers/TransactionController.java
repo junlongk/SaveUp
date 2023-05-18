@@ -1,7 +1,6 @@
 package com.junlongk.server.controllers;
 
 import com.junlongk.server.Utils;
-import com.junlongk.server.models.Account;
 import com.junlongk.server.models.Transaction;
 import com.junlongk.server.services.TransactionService;
 import jakarta.json.Json;
@@ -34,12 +33,14 @@ public class TransactionController {
             @RequestBody Transaction transaction) {
         String userId = authentication.getName();
 
-        String accountId = transactionSvc.addTransaction(transaction);
+        System.out.println(transaction.getDate());
+
+        String transactionId = transactionSvc.addTransaction(transaction, userId);
 
         JsonObject resp = Json.createObjectBuilder()
                 .add("message",
                         "Transaction (id: %s) created successfully!"
-                                .formatted(transaction.getTransactionId()))
+                                .formatted(transactionId))
                 .build();
 
         return ResponseEntity

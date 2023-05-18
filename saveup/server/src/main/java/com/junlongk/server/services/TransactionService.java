@@ -15,10 +15,12 @@ public class TransactionService {
     @Autowired
     private TransactionRepository transactionRepo;
 
-    public String addTransaction(Transaction transaction) {
+    public String addTransaction(Transaction transaction, String userId) {
         // Generate transaction ID
         String transactionId = UUID.randomUUID().toString();
         transaction.setTransactionId(transactionId);
+
+        transaction.setUserId(userId);
 
         transactionRepo.addTransaction(transaction);
 

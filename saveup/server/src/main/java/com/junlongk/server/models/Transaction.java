@@ -1,14 +1,14 @@
 package com.junlongk.server.models;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Transaction {
 
     private String transactionId;
     private String accountId;
     private String accountName;
-    private Date date;
+    private LocalDate date;
     private String payee;
     private String payeeAccountId;
     private String payeeAccountName;
@@ -46,11 +46,11 @@ public class Transaction {
         this.accountName = accountName;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {JwtHelperService} from "@auth0/angular-jwt";
-import {User} from "../models/User";
 import {lastValueFrom} from "rxjs";
-import {UserLogin} from "../models/UserLogin";
 import {Account} from "../models/Account";
 
 @Injectable({
@@ -12,7 +9,7 @@ import {Account} from "../models/Account";
 export class AccountService {
 
   private ACCOUNTS_URL = "/api/accounts";
-  private MODIFY_ACCOUNT_URL = "/api/accounts/modifybalance";
+  private MODIFY_ACCOUNT_URL = "/api/accounts/modify";
   constructor(private httpClient: HttpClient) { }
 
   getAccounts(userId: string): Promise<any> {
@@ -43,7 +40,7 @@ export class AccountService {
     const body = JSON.stringify(account);
 
     return lastValueFrom(this.httpClient
-      .put<Account>(this.ACCOUNTS_URL + "/modify", body, { headers }));
+      .put<Account>(this.MODIFY_ACCOUNT_URL, body, { headers }));
   }
 
   deleteAccount(accountId: string): Promise<any> {
@@ -53,26 +50,4 @@ export class AccountService {
     return lastValueFrom(this.httpClient
       .delete<Account>(this.ACCOUNTS_URL + "/delete/" + accountId, { headers }));
   }
-
-  // FOR REFERENCE ONLY - DELETE AFTER DONE
-  //
-  // signupUser(user: User): Promise<any> {
-  //   const headers = new HttpHeaders()
-  //     .set('Content-Type', 'application/json; charset=utf-8');
-  //
-  //   const body = JSON.stringify(user);
-  //
-  //   return lastValueFrom(this.httpClient
-  //     .post<User>(this.REGISTER_URL, body, { headers }));
-  // }
-  //
-  // loginUser(userLogin: UserLogin): Promise<any> {
-  //   const headers = new HttpHeaders()
-  //     .set('Content-Type', 'application/json; charset=utf-8');
-  //
-  //   const body = JSON.stringify(userLogin);
-  //
-  //   return lastValueFrom(this.httpClient
-  //     .post<UserLogin>(this.LOGIN_URL, body, { headers }));
-  // }
 }

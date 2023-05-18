@@ -4,7 +4,7 @@ import {MainPageComponent} from "./components/main-page/main-page.component";
 import {LoginComponent} from "./components/login/login.component";
 import {SignupComponent} from "./components/signup/signup.component";
 import {UserPageComponent} from "./components/user-page/user-page.component";
-import {TransactionsComponent} from "./components/transactions/transactions.component";
+import {TransactionListComponent} from "./components/transaction-list/transaction-list.component";
 import {BudgetsComponent} from "./components/budgets/budgets.component";
 import {AccountListComponent} from "./components/account-list/account-list.component";
 import {AuthGuard} from "./auth/auth.guard";
@@ -18,7 +18,7 @@ const routes: Routes = [
       children: [
         { path: '', redirectTo: 'accounts', pathMatch: 'full' },
         { path: 'budgets', component: BudgetsComponent },
-        { path: 'transactions', component: TransactionsComponent },
+        { path: 'transactions', component: TransactionListComponent },
         { path: 'accounts', component: AccountListComponent },
         { path: 'accounts/:accountId', component: AccountDetailComponent }
       ]},

@@ -45,7 +45,7 @@ a {
   border-radius: 100%;
   position: absolute;
   background: white;
-  bottom: -6px;
+  bottom: 2px;
   height: 1px;
   content: '';
   width: 50px;

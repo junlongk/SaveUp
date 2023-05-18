@@ -7,6 +7,8 @@ import jakarta.json.JsonObject;
 import org.bson.Document;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import static com.junlongk.server.Constants.*;
 
@@ -43,7 +45,7 @@ public class Utils {
         document.put("transactionId", transaction.getTransactionId());
         document.put("accountId", transaction.getAccountId());
         document.put("accountName", transaction.getAccountName());
-        document.put("date", transaction.getDate());
+        document.put("date", transaction.getDate().toString());
         document.put("payee", transaction.getPayee());
         document.put("payeeAccountId", transaction.getPayeeAccountId());
         document.put("payeeAccountName", transaction.getPayeeAccountName());
@@ -61,7 +63,7 @@ public class Utils {
         transaction.setTransactionId(doc.getString(FIELD_TRANSACTION_ID));
         transaction.setAccountId(doc.getString(FIELD_ACCOUNT_ID));
         transaction.setAccountName(doc.getString(FIELD_ACCOUNT_NAME));
-        transaction.setDate(doc.getDate(FIELD_DATE));
+        transaction.setDate(LocalDate.parse(doc.getString(FIELD_DATE)));
         transaction.setPayee(doc.getString(FIELD_PAYEE));
         transaction.setPayeeAccountId(doc.getString(FIELD_PAYEE_ACCOUNT_ID));
         transaction.setPayeeAccountName(doc.getString(FIELD_PAYEE_ACCOUNT_NAME));
@@ -72,5 +74,4 @@ public class Utils {
         transaction.setInflow(new BigDecimal(doc.getString(FIELD_INFLOW)));
         return transaction;
     }
-
 }
