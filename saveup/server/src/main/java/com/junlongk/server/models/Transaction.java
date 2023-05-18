@@ -6,27 +6,17 @@ import java.util.Date;
 public class Transaction {
 
     private String transactionId;
-
     private String accountId;
-
     private String accountName;
-
     private Date date;
-
     private String payee;
-
     private String payeeAccountId;
-
     private String payeeAccountName;
-
-    private String category;
-
+    private String envelopeId;
+    private String envelopeName;
     private String memo;
-
     private BigDecimal outflow;
-
     private BigDecimal inflow;
-
     private String userId;
 
     public Transaction() {
@@ -88,12 +78,20 @@ public class Transaction {
         this.payeeAccountName = payeeAccountName;
     }
 
-    public String getCategory() {
-        return category;
+    public String getEnvelopeId() {
+        return envelopeId;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setEnvelopeId(String envelopeId) {
+        this.envelopeId = envelopeId;
+    }
+
+    public String getEnvelopeName() {
+        return envelopeName;
+    }
+
+    public void setEnvelopeName(String envelopeName) {
+        this.envelopeName = envelopeName;
     }
 
     public String getMemo() {
@@ -130,12 +128,12 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return ("Transaction{transactionId='%s', accountId='%s', " +
-                "accountName='%s', date=%s, payee='%s', payeeAccountId='%s', " +
-                "payeeAccountName='%s', category='%s', memo='%s', outflow=%s, " +
+        return ("Transaction{transactionId='%s', accountId='%s', accountName='%s', " +
+                "date=%s, payee='%s', payeeAccountId='%s', payeeAccountName='%s', " +
+                "envelopeId='%s', envelopeName='%s', memo='%s', outflow=%s, " +
                 "inflow=%s, userId='%s'}")
-                .formatted(transactionId, accountId, accountName, date,
-                        payee, payeeAccountId, payeeAccountName, category,
+                .formatted(transactionId, accountId, accountName, date, payee,
+                        payeeAccountId, payeeAccountName, envelopeId, envelopeName,
                         memo, outflow, inflow, userId);
     }
 }
