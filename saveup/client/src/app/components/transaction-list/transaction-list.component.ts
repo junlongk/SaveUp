@@ -26,5 +26,10 @@ export class TransactionListComponent implements OnInit{
         this.transactions = data;
         console.info('>>> transactions', this.transactions);
       })
+      .catch(error => {
+          console.error(error.error.message);
+          this.transactions = []; // clear transactions array if last item is deleted
+        }
+      );
   }
 }

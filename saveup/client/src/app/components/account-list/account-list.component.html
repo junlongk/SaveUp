@@ -10,30 +10,30 @@
 
   <p-divider></p-divider>
 
-  <div *ngIf="accounts.length <= 0">
-    <p>You do not have any account yet.</p>
-    <p>Please create a new account using the "New" button above.</p>
-  </div>
-
-  <div *ngIf="accounts.length > 0">
+  <div>
     <p-toast></p-toast>
     <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
-    <p-card [style]="{ width: '400px' }">
+    <p-card [style]="{ width: '500px' }">
       <p-table [value]="accounts"
-               styleClass="p-datatable-striped"
-               [tableStyle]="{ 'width': '370px' }">
+               styleClass="p-datatable-striped">
         <ng-template pTemplate="header">
           <tr>
-            <th style="width: 220px">Name</th>
-            <th style="width: 120px">Balance</th>
-            <th style="width: 30px"></th>
+            <th style="width: 200px">Name</th>
+            <th style="width: 200px">Balance</th>
+            <th>
+              <p-button label="New"
+                        icon="pi pi-plus"
+                        styleClass="p-button-outlined p-button-sm"
+                        (click)="create()">
+              </p-button>
+            </th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-account>
           <tr>
             <td>{{ account.accountName }}</td>
             <td>{{ account.balance | currency }}</td>
-            <td>
+            <td [style]="{ 'text-align': 'right'}">
               <p-button icon="pi pi-ellipsis-v"
                         styleClass="p-button-text p-button-sm"
                         (click)="selectedAccount = account;
@@ -43,6 +43,11 @@
                       [popup]="true"
                       appendTo="body"></p-menu>
             </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="8" [style]="{ 'text-align': 'center' }">No account found.</td>
           </tr>
         </ng-template>
       </p-table>

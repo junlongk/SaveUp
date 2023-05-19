@@ -90,4 +90,12 @@ public class TransactionController {
                 .status(HttpStatus.NOT_FOUND)
                 .body(resp.toString());
     }
+
+    @PutMapping(path = "/modify")
+    @ResponseBody
+    public ResponseEntity<String> modifyTransaction(
+            Authentication authentication,
+            @RequestBody Transaction transaction) {
+        return null;
+    }
 }

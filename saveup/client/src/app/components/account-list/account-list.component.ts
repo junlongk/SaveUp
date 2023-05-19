@@ -144,7 +144,12 @@ export class AccountListComponent implements OnInit, OnDestroy {
       .then(data => {
         this.accounts = data;
         console.info('>>> accounts: ', this.accounts);
-      });
+      })
+      .catch(error => {
+          console.error(error.error.message);
+          this.accounts = []; // clear accounts array if last item is deleted
+        }
+      );
   }
 
   ngOnDestroy():void {
