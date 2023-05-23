@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {lastValueFrom} from "rxjs";
-import {Account} from "../models/Account";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { lastValueFrom } from "rxjs";
+import { Account } from "../models/Account";
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +10,8 @@ export class AccountService {
 
   private ACCOUNTS_URL = "/api/accounts";
   private MODIFY_ACCOUNT_URL = "/api/accounts/modify";
+  private DELETE_ACCOUNT_URL = "/api/accounts/delete/";
+
   constructor(private httpClient: HttpClient) { }
 
   getAccounts(userId: string): Promise<any> {
@@ -48,6 +50,6 @@ export class AccountService {
       .set('Content-Type', 'application/json; charset=utf-8');
 
     return lastValueFrom(this.httpClient
-      .delete<Account>(this.ACCOUNTS_URL + "/delete/" + accountId, { headers }));
+      .delete<Account>(this.DELETE_ACCOUNT_URL + accountId, { headers }));
   }
 }

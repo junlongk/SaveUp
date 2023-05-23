@@ -33,8 +33,6 @@ public class TransactionController {
             @RequestBody Transaction transaction) {
         String userId = authentication.getName();
 
-        System.out.println(transaction.getDate());
-
         String transactionId = transactionSvc.addTransaction(transaction, userId);
 
         JsonObject resp = Json.createObjectBuilder()

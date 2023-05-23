@@ -40,7 +40,7 @@ export class AccountFormComponent implements OnInit {
       accountName: this.fb.control<string>('', [Validators.required]),
       balance: this.fb.control<number | null>(null, [Validators.required]),
       accountId: this.fb.control<string>('')
-    })
+    });
   }
 
   saveAccount() {

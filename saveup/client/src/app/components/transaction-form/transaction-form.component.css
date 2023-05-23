@@ -1,0 +1,15 @@
+.transaction-form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-row-group {
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+}

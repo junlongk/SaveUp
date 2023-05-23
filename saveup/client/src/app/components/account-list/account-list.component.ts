@@ -1,11 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AccountService} from "../../services/account.service";
-import {Account} from "../../models/Account";
-import {AuthService} from "../../auth/auth.service";
-import {ConfirmationService, MenuItem, MessageService} from "primeng/api";
-import {Router} from "@angular/router";
-import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
-import {AccountFormComponent} from "../account-form/account-form.component";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AccountService } from "../../services/account.service";
+import { Account } from "../../models/Account";
+import { AuthService } from "../../auth/auth.service";
+import { ConfirmationService, MenuItem, MessageService } from "primeng/api";
+import { Router } from "@angular/router";
+import { DialogService, DynamicDialogRef } from "primeng/dynamicdialog";
+import { AccountFormComponent } from "../account-form/account-form.component";
 
 @Component({
   selector: 'app-account-list',
@@ -73,7 +73,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
       width: '300px',
       height: '300px',
       contentStyle: { overflow: 'auto' },
-      baseZIndex: 10000,
+      baseZIndex: 10000
     });
 
     this.ref.onClose.subscribe((account: Account) => {
@@ -87,8 +87,11 @@ export class AccountListComponent implements OnInit, OnDestroy {
             // refresh account list after submitting form
             this.getAccounts();
           });
-        this.messageSvc.add({ severity: 'success',
-          summary: 'Success', detail: `Edited ${account.accountName}` });
+        this.messageSvc.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: `Edited ${account.accountName}`
+        });
       }
     });
   }
@@ -106,8 +109,11 @@ export class AccountListComponent implements OnInit, OnDestroy {
             // refresh account list after deleting
             this.getAccounts();
           });
-        this.messageSvc.add({ severity: 'success',
-          summary: 'Success', detail: `Deleted ${account.accountName}` });
+        this.messageSvc.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: `Deleted ${account.accountName}`
+        });
       }
     });
   }
@@ -118,7 +124,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
       width: '300px',
       height: '300px',
       contentStyle: { overflow: 'auto' },
-      baseZIndex: 10000,
+      baseZIndex: 10000
     });
 
     this.ref.onClose.subscribe((account: Account) => {
@@ -132,8 +138,11 @@ export class AccountListComponent implements OnInit, OnDestroy {
             // refresh account list after submitting form
             this.getAccounts();
           });
-        this.messageSvc.add({ severity: 'success',
-          summary: 'Success', detail: `Added ${account.accountName}` });
+        this.messageSvc.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: `Added ${account.accountName}`
+        });
       }
     });
   }

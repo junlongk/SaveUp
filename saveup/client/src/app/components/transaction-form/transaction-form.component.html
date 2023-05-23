@@ -1,0 +1,90 @@
+<div>
+    <form class="transaction-form-container"
+          [formGroup]="form"
+          (ngSubmit)="saveTransaction()">
+      <input type="hidden" formControlName="accountId" />
+
+      <div class="input-row-group">
+        <!-- accountName needs to be dropdown selector   -->
+        <div class="field input-container">
+          <label for="accountName">Account</label>
+          <input pInputText
+                 type="text"
+                 id="accountName"
+                 formControlName="accountName" />
+        </div>
+
+        <div class="field input-container">
+          <label for="date">Date</label>
+          <p-calendar formControlName="date"
+                      id="date"
+                      dateFormat="dd/mm/yy"
+                      appendTo="body"></p-calendar>
+        </div>
+      </div>
+
+      <div class="input-row-group">
+        <!-- payee needs to be dropdown selector-->
+        <div class="field input-container">
+          <label for="payee">Payee</label>
+          <input pInputText
+                 type="text"
+                 id="payee"
+                 formControlName="payee" />
+        </div>
+
+        <!-- envelopeName needs to be dropdown selector-->
+        <div class="field input-container">
+          <label for="envelopeName">Envelope</label>
+          <input pInputText
+                 type="text"
+                 id="envelopeName"
+                 formControlName="envelopeName" />
+        </div>
+      </div>
+
+      <input type="hidden" formControlName="payeeAccountId" />
+
+      <input type="hidden" formControlName="payeeAccountName" />
+
+      <input type="hidden" formControlName="envelopeId" />
+
+      <div class="input-row-group">
+        <div class="field input-container">
+          <label for="memo">Memo</label>
+          <input pInputText
+                 type="text"
+                 id="memo"
+                 formControlName="memo" />
+        </div>
+      </div>
+
+      <div class="input-row-group">
+        <div class="field input-container">
+          <label for="outflow">Outflow</label>
+          <p-inputNumber
+            mode="decimal"
+            [minFractionDigits]="0"
+            [maxFractionDigits]="2"
+            id="outflow"
+            formControlName="outflow"></p-inputNumber>
+        </div>
+
+        <div class="field input-container">
+          <label for="inflow">Inflow</label>
+          <p-inputNumber
+            mode="decimal"
+            [minFractionDigits]="0"
+            [maxFractionDigits]="2"
+            id="inflow"
+            formControlName="inflow"></p-inputNumber>
+        </div>
+      </div>
+
+      <input type="hidden" formControlName="accountId" />
+
+      <p-button type="submit"
+                [disabled]="form.invalid"
+                styleClass="p-button-outlined">Save</p-button>
+    </form>
+</div>

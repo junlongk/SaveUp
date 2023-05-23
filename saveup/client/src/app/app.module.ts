@@ -21,6 +21,7 @@ import { AccountService } from "./services/account.service";
 import { AccountDetailComponent } from "./components/account-detail/account-detail.component";
 import { AccountFormComponent } from "./components/account-form/account-form.component";
 import { TransactionService } from "./services/transaction.service";
+import {TransactionFormComponent} from "./components/transaction-form/transaction-form.component";
 
 // used for enabling PrimeNG ripple effects throughout the app
 const initializeAppFactory = (primeConfig: PrimeNGConfig) => () => {
@@ -36,6 +37,7 @@ const initializeAppFactory = (primeConfig: PrimeNGConfig) => () => {
     MainPageComponent,
     BudgetsComponent,
     TransactionListComponent,
+    TransactionFormComponent,
     AccountListComponent,
     AccountFormComponent,
     AccountDetailComponent,

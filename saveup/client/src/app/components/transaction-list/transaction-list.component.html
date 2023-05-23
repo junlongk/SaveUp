@@ -1,25 +1,28 @@
-<div class="transactions-header">
-  <span>Transactions</span>
-  <p-button label="New"
-            icon="pi pi-plus"
-            styleClass="p-button-outlined p-button-sm">
-  </p-button>
-</div>
-<p-divider></p-divider>
 <p-toast></p-toast>
+<p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
 <p-card>
+  <div class="transactions-header">
+    <h1>Transactions</h1>
+    <p-button label="New"
+              icon="pi pi-plus"
+              styleClass="p-button-outlined p-button-sm"
+              (click)="create()">
+    </p-button>
+  </div>
+
+  <p-divider></p-divider>
+
   <p-table [value]="transactions"
-           styleClass="p-datatable-striped p-datatable-sm"
-           [resizableColumns]="true">
+           styleClass="p-datatable-striped p-datatable-sm">
     <ng-template pTemplate="header">
       <tr>
-        <th>Account</th>
-        <th style="width: 100px">Date</th>
+        <th style="width: 100px">Account</th>
+        <th style="width: 90px">Date</th>
         <th>Payee</th>
         <th>Envelope</th>
         <th>Memo</th>
-        <th>Outflow</th>
-        <th>Inflow</th>
+        <th [style]="{ 'text-align': 'right' }">Outflow</th>
+        <th [style]="{ 'text-align': 'right' }">Inflow</th>
         <th></th>
       </tr>
     </ng-template>
@@ -31,13 +34,33 @@
         <td>{{ transaction.payee }}</td>
         <td>{{ transaction.envelopeName }}</td>
         <td>{{ transaction.memo }}</td>
-        <td>{{ transaction.outflow | currency }}</td>
-        <td>{{ transaction.inflow | currency }}</td>
-        <td [style]="{ 'text-align': 'center' }">
-          <p-button icon="pi pi-pencil" styleClass="p-button-text p-button-sm"></p-button>
+        <td [style]="{ 'text-align': 'right' }">
+          <div *ngIf="transaction.outflow == 0">
+          </div>
+          <div *ngIf="transaction.outflow > 0">
+            ({{ transaction.outflow | currency }})
+          </div>
+        </td>
+        <td [style]="{ 'text-align': 'right' }">
+          <div *ngIf="transaction.inflow == 0">
+          </div>
+          <div *ngIf="transaction.inflow > 0">
+            {{ transaction.inflow | currency }}
+          </div>
+        </td>
+        <td [style]="{ 'text-align': 'right' }">
+          <p-button icon="pi pi-ellipsis-v"
+                    styleClass="p-button-text p-button-sm"
+                    (click)="selectedTransaction = transaction;
+                    menu.toggle($event)"></p-button>
+          <p-menu #menu
+                  [model]="menuItems"
+                  [popup]="true"
+                  appendTo="body"></p-menu>
         </td>
       </tr>
     </ng-template>
+
     <ng-template pTemplate="emptymessage">
       <tr>
         <td colspan="8" [style]="{ 'text-align': 'center' }">No transaction found.</td>
@@ -46,44 +69,44 @@
   </p-table>
 </p-card>
 
-<p-divider></p-divider>
-<p-card>
-  <form [formGroup]="form" (ngSubmit)="saveTransaction()">
-    <input type="hidden" formControlName="accountId" />
-    <!-- accountName needs to be dropdown selector   -->
-    <input pInputText
-           type="text"
-           formControlName="accountName" />
-    <p-calendar formControlName="date"
-                dateFormat="dd/mm/yy"></p-calendar>
-    <!-- payee needs to be dropdown selector-->
-    <input pInputText
-           type="text"
-           formControlName="payee" />
-    <input type="hidden" formControlName="payeeAccountId" />
-    <input type="hidden" formControlName="payeeAccountName" />
-    <input type="hidden" formControlName="envelopeId" />
-    <!-- envelopeName needs to be dropdown selector-->
-    <input pInputText
-           type="text"
-           formControlName="envelopeName" />
-    <input pInputText
-           type="text"
-           formControlName="memo" />
-    <p-inputNumber
-      mode="decimal"
-      [minFractionDigits]="0"
-      [maxFractionDigits]="2"
-      formControlName="outflow"></p-inputNumber>
-    <p-inputNumber
-      mode="decimal"
-      [minFractionDigits]="0"
-      [maxFractionDigits]="2"
-      formControlName="inflow"></p-inputNumber>
+<!--<p-divider></p-divider>-->
+<!--<p-card>-->
+<!--  <form [formGroup]="form" (ngSubmit)="saveTransaction()">-->
+<!--    <input type="hidden" formControlName="accountId" />-->
+<!--    &lt;!&ndash; accountName needs to be dropdown selector   &ndash;&gt;-->
+<!--    <input pInputText-->
+<!--           type="text"-->
+<!--           formControlName="accountName" />-->
+<!--    <p-calendar formControlName="date"-->
+<!--                dateFormat="dd/mm/yy"></p-calendar>-->
+<!--    &lt;!&ndash; payee needs to be dropdown selector&ndash;&gt;-->
+<!--    <input pInputText-->
+<!--           type="text"-->
+<!--           formControlName="payee" />-->
+<!--    <input type="hidden" formControlName="payeeAccountId" />-->
+<!--    <input type="hidden" formControlName="payeeAccountName" />-->
+<!--    <input type="hidden" formControlName="envelopeId" />-->
+<!--    &lt;!&ndash; envelopeName needs to be dropdown selector&ndash;&gt;-->
+<!--    <input pInputText-->
+<!--           type="text"-->
+<!--           formControlName="envelopeName" />-->
+<!--    <input pInputText-->
+<!--           type="text"-->
+<!--           formControlName="memo" />-->
+<!--    <p-inputNumber-->
+<!--      mode="decimal"-->
+<!--      [minFractionDigits]="0"-->
+<!--      [maxFractionDigits]="2"-->
+<!--      formControlName="outflow"></p-inputNumber>-->
+<!--    <p-inputNumber-->
+<!--      mode="decimal"-->
+<!--      [minFractionDigits]="0"-->
+<!--      [maxFractionDigits]="2"-->
+<!--      formControlName="inflow"></p-inputNumber>-->
 
-    <input type="hidden" formControlName="accountId" />
-    <p-button type="submit"
-              [disabled]="form.invalid"
-              styleClass="p-button-outlined">Save</p-button>
-  </form>
-</p-card>
+<!--    <input type="hidden" formControlName="accountId" />-->
+<!--    <p-button type="submit"-->
+<!--              [disabled]="form.invalid"-->
+<!--              styleClass="p-button-outlined">Save</p-button>-->
+<!--  </form>-->
+<!--</p-card>-->

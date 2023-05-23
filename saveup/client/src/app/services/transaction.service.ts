@@ -9,6 +9,9 @@ import {Transaction} from "../models/Transaction";
 export class TransactionService {
 
   private TRANSACTIONS_URL = "/api/transactions";
+  private MODIFY_TRANSACTION_URL = "/api/transactions/modify";
+  private DELETE_TRANSACTION_URL = "/api/transactions/delete/";
+
   constructor(private httpClient: HttpClient) { }
 
   getTransactions(userId: string): Promise<any> {
@@ -30,5 +33,23 @@ export class TransactionService {
 
     return lastValueFrom(this.httpClient
       .post<Transaction>(this.TRANSACTIONS_URL, body, { headers }));
+  }
+
+  modifyTransaction(transaction: Transaction): Promise<any> {
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json; charset=utf-8');
+
+    const body = JSON.stringify(transaction);
+
+    return lastValueFrom(this.httpClient
+      .put<Transaction>(this.MODIFY_TRANSACTION_URL, body, { headers }));
+  }
+
+  deleteTransaction(transactionId: string): Promise<any> {
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json; charset=utf-8');
+
+    return lastValueFrom(this.httpClient
+      .delete<Transaction>(this.DELETE_TRANSACTION_URL + transactionId, { headers }));
   }
 }

@@ -1,6 +1,8 @@
-<div>
+<p-toast></p-toast>
+<p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
+<p-card [style]="{ width: '500px' }">
   <div class="accounts-header">
-    <span>Accounts</span>
+    <h1>Accounts</h1>
     <p-button label="New"
               icon="pi pi-plus"
               styleClass="p-button-outlined p-button-sm"
@@ -10,48 +12,45 @@
 
   <p-divider></p-divider>
 
-  <div>
-    <p-toast></p-toast>
-    <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
-    <p-card [style]="{ width: '500px' }">
-      <p-table [value]="accounts"
-               styleClass="p-datatable-striped">
-        <ng-template pTemplate="header">
-          <tr>
-            <th style="width: 200px">Name</th>
-            <th style="width: 200px">Balance</th>
-            <th>
-              <p-button label="New"
-                        icon="pi pi-plus"
-                        styleClass="p-button-outlined p-button-sm"
-                        (click)="create()">
-              </p-button>
-            </th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-account>
-          <tr>
-            <td>{{ account.accountName }}</td>
-            <td>{{ account.balance | currency }}</td>
-            <td [style]="{ 'text-align': 'right'}">
-              <p-button icon="pi pi-ellipsis-v"
-                        styleClass="p-button-text p-button-sm"
-                        (click)="selectedAccount = account;
-                        menu.toggle($event)"></p-button>
-              <p-menu #menu
-                      [model]="menuItems"
-                      [popup]="true"
-                      appendTo="body"></p-menu>
-            </td>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="emptymessage">
-          <tr>
-            <td colspan="8" [style]="{ 'text-align': 'center' }">No account found.</td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </p-card>
-  </div>
+  <p-table [value]="accounts"
+           styleClass="p-datatable-striped">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 200px">Name</th>
+        <th style="width: 150px"
+            [style]="{ 'text-align': 'right'}">Balance</th>
+        <th></th>
+      </tr>
+    </ng-template>
 
-</div>
+    <ng-template pTemplate="body" let-account>
+      <tr>
+        <td>{{ account.accountName }}</td>
+        <td [style]="{ 'text-align': 'right'}">
+          {{ account.balance | currency }}
+        </td>
+        <td [style]="{ 'text-align': 'right'}">
+          <p-button icon="pi pi-ellipsis-v"
+                    styleClass="p-button-text p-button-sm"
+                    (click)="selectedAccount = account;
+                    menu.toggle($event)"></p-button>
+          <p-menu #menu
+                  [model]="menuItems"
+                  [popup]="true"
+                  appendTo="body"></p-menu>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="8" [style]="{ 'text-align': 'center' }">
+          No account found.
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>
+
+
+
