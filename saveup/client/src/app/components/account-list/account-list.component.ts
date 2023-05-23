@@ -147,7 +147,8 @@ export class AccountListComponent implements OnInit, OnDestroy {
       })
       .catch(error => {
           console.error(error.error.message);
-          this.accounts = []; // clear accounts array if last item is deleted
+          // TEMP FIX: clear accounts array after last item is deleted
+          this.accounts = [];
         }
       );
   }

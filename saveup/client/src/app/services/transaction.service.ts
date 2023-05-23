@@ -21,4 +21,14 @@ export class TransactionService {
     return lastValueFrom(this.httpClient
       .get<Transaction[]>(this.TRANSACTIONS_URL, { params, headers }));
   }
+
+  addTransaction(transaction: Transaction): Promise<any> {
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json; charset=utf-8');
+
+    const body = JSON.stringify(transaction);
+
+    return lastValueFrom(this.httpClient
+      .post<Transaction>(this.TRANSACTIONS_URL, body, { headers }));
+  }
 }
