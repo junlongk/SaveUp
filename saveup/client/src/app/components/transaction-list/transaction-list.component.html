@@ -1,23 +1,24 @@
 <p-toast></p-toast>
-<p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
+<p-confirmDialog [style]="{width: '400px'}"></p-confirmDialog>
 <p-card>
   <div class="transactions-header">
     <h1>Transactions</h1>
+  </div>
+
+  <p-divider align="right">
     <p-button label="New"
               icon="pi pi-plus"
               styleClass="p-button-outlined p-button-sm"
               (click)="create()">
     </p-button>
-  </div>
-
-  <p-divider></p-divider>
+  </p-divider>
 
   <p-table [value]="transactions"
            styleClass="p-datatable-striped p-datatable-sm">
     <ng-template pTemplate="header">
       <tr>
-        <th style="width: 100px">Account</th>
-        <th style="width: 90px">Date</th>
+        <th>Account</th>
+        <th>Date</th>
         <th>Payee</th>
         <th>Envelope</th>
         <th>Memo</th>
@@ -68,45 +69,3 @@
     </ng-template>
   </p-table>
 </p-card>
-
-<!--<p-divider></p-divider>-->
-<!--<p-card>-->
-<!--  <form [formGroup]="form" (ngSubmit)="saveTransaction()">-->
-<!--    <input type="hidden" formControlName="accountId" />-->
-<!--    &lt;!&ndash; accountName needs to be dropdown selector   &ndash;&gt;-->
-<!--    <input pInputText-->
-<!--           type="text"-->
-<!--           formControlName="accountName" />-->
-<!--    <p-calendar formControlName="date"-->
-<!--                dateFormat="dd/mm/yy"></p-calendar>-->
-<!--    &lt;!&ndash; payee needs to be dropdown selector&ndash;&gt;-->
-<!--    <input pInputText-->
-<!--           type="text"-->
-<!--           formControlName="payee" />-->
-<!--    <input type="hidden" formControlName="payeeAccountId" />-->
-<!--    <input type="hidden" formControlName="payeeAccountName" />-->
-<!--    <input type="hidden" formControlName="envelopeId" />-->
-<!--    &lt;!&ndash; envelopeName needs to be dropdown selector&ndash;&gt;-->
-<!--    <input pInputText-->
-<!--           type="text"-->
-<!--           formControlName="envelopeName" />-->
-<!--    <input pInputText-->
-<!--           type="text"-->
-<!--           formControlName="memo" />-->
-<!--    <p-inputNumber-->
-<!--      mode="decimal"-->
-<!--      [minFractionDigits]="0"-->
-<!--      [maxFractionDigits]="2"-->
-<!--      formControlName="outflow"></p-inputNumber>-->
-<!--    <p-inputNumber-->
-<!--      mode="decimal"-->
-<!--      [minFractionDigits]="0"-->
-<!--      [maxFractionDigits]="2"-->
-<!--      formControlName="inflow"></p-inputNumber>-->
-
-<!--    <input type="hidden" formControlName="accountId" />-->
-<!--    <p-button type="submit"-->
-<!--              [disabled]="form.invalid"-->
-<!--              styleClass="p-button-outlined">Save</p-button>-->
-<!--  </form>-->
-<!--</p-card>-->

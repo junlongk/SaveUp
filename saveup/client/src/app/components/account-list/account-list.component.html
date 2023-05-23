@@ -1,16 +1,17 @@
 <p-toast></p-toast>
-<p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
+<p-confirmDialog [style]="{width: '400px'}"></p-confirmDialog>
 <p-card [style]="{ width: '500px' }">
   <div class="accounts-header">
     <h1>Accounts</h1>
+  </div>
+
+  <p-divider align="right">
     <p-button label="New"
               icon="pi pi-plus"
               styleClass="p-button-outlined p-button-sm"
               (click)="create()">
     </p-button>
-  </div>
-
-  <p-divider></p-divider>
+  </p-divider>
 
   <p-table [value]="accounts"
            styleClass="p-datatable-striped">

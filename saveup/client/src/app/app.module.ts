@@ -21,7 +21,8 @@ import { AccountService } from "./services/account.service";
 import { AccountDetailComponent } from "./components/account-detail/account-detail.component";
 import { AccountFormComponent } from "./components/account-form/account-form.component";
 import { TransactionService } from "./services/transaction.service";
-import {TransactionFormComponent} from "./components/transaction-form/transaction-form.component";
+import { TransactionFormComponent } from "./components/transaction-form/transaction-form.component";
+import { DatePipe } from "@angular/common";
 
 // used for enabling PrimeNG ripple effects throughout the app
 const initializeAppFactory = (primeConfig: PrimeNGConfig) => () => {
@@ -61,6 +62,7 @@ const initializeAppFactory = (primeConfig: PrimeNGConfig) => () => {
     AuthService,
     AccountService,
     TransactionService,
+    DatePipe,
     {
       provide: APP_INITIALIZER,
       useFactory: initializeAppFactory,

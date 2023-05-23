@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Transaction} from "../../models/Transaction";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-transaction-form',
@@ -14,7 +15,8 @@ export class TransactionFormComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               public ref: DynamicDialogRef,
-              public config: DynamicDialogConfig) { }
+              public config: DynamicDialogConfig,
+              private datepipe: DatePipe) { }
 
   ngOnInit():void {
     this.form = this.createForm();
@@ -23,8 +25,37 @@ export class TransactionFormComponent implements OnInit {
     // get data from DynamicDialogConfig as data is passed through config
     if (this.config.data != null) {
       this.transaction = this.config.data;
+      console.info('>> config data: ', this.transaction);
 
+      // convert date format to p-calendar format
+      const formattedDate = this.datepipe
+        .transform(this.transaction.date, 'dd/MM/yyyy');
 
+      const transactionIdCtrl =  this.form.get('transactionId') as FormControl;
+      const accountIdCtrl = this.form.get('accountId') as FormControl;
+      const accountNameCtrl = this.form.get('accountName') as FormControl;
+      const dateCtrl = this.form.get('date') as FormControl;
+      const payeeCtrl = this.form.get('payee') as FormControl;
+      const payeeAccountIdCtrl = this.form.get('payeeAccountId') as FormControl;
+      const payeeAccountNameCtrl = this.form.get('payeeAccountName') as FormControl;
+      const envelopeIdCtrl = this.form.get('envelopeId') as FormControl;
+      const envelopeNameCtrl = this.form.get('envelopeName') as FormControl;
+      const memoCtrl = this.form.get('memo') as FormControl;
+      const outflowCtrl = this.form.get('outflow') as FormControl;
+      const inflowCtrl = this.form.get('inflow') as FormControl;
+
+      transactionIdCtrl.setValue(this.transaction.transactionId);
+      accountIdCtrl.setValue(this.transaction.accountId);
+      accountNameCtrl.setValue(this.transaction.accountName);
+      dateCtrl.setValue(formattedDate);
+      payeeCtrl.setValue(this.transaction.payee);
+      payeeAccountIdCtrl.setValue(this.transaction.payeeAccountId);
+      payeeAccountNameCtrl.setValue(this.transaction.payeeAccountName);
+      envelopeIdCtrl.setValue(this.transaction.envelopeId);
+      envelopeNameCtrl.setValue(this.transaction.envelopeName);
+      memoCtrl.setValue(this.transaction.memo);
+      outflowCtrl.setValue(this.transaction.outflow);
+      inflowCtrl.setValue(this.transaction.inflow);
     }
   }
 
@@ -54,6 +85,13 @@ export class TransactionFormComponent implements OnInit {
 
   saveTransaction() {
     const transaction = this.form.value as Transaction;
+
+    // prevent saving 'null' as form value
+    if (transaction.outflow == null)
+      transaction.outflow = 0;
+    if (transaction.inflow == null)
+      transaction.inflow = 0;
+
     this.ref.close(transaction);
   }
 }

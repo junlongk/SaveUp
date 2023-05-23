@@ -1,12 +1,13 @@
-<div class="account-form-container">
-  <form [formGroup]="form" (ngSubmit)="saveAccount()">
+<div>
+  <form class="account-form-container"
+        [formGroup]="form"
+        (ngSubmit)="saveAccount()">
     <div class="field input-container">
       <label for="accountName">Name</label>
       <input pInputText
              type="text"
              class="p-inputtext-sm"
              id="accountName"
-             size="30"
              formControlName="accountName" />
     </div>
     <div class="field input-container">
