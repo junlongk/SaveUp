@@ -31,4 +31,21 @@ public class TransactionService {
             String userId, int limit, int skip) {
         return transactionRepo.getAllTransactions(userId, limit, skip);
     }
+
+    public String modifyTransaction(
+            String transactionId, Transaction transaction) {
+        Transaction updated =
+                transactionRepo.modifyTransaction(transactionId, transaction);
+        return updated.getTransactionId();
+    }
+
+    public String deleteTransaction(String transactionId) {
+        Transaction deleted =
+                transactionRepo.deleteTransaction(transactionId);
+        return deleted.getTransactionId();
+    }
+
+    public String getUserIdByTransactionId(String transactionId) {
+        return transactionRepo.getUserIdFromTransactionId(transactionId);
+    }
 }

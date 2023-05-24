@@ -5,9 +5,11 @@ import com.junlongk.server.models.Transaction;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.FindAndReplaceOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -58,5 +60,46 @@ public class TransactionRepository {
             return Optional.of(results.getMappedResults().stream()
                 .map(Utils::docToTransaction)
                 .toList());
+    }
+
+    public Transaction modifyTransaction(
+            String transactionId, Transaction transaction) {
+        Query query = Query.query(
+                Criteria.where(FIELD_TRANSACTION_ID).is(transactionId));
+
+        FindAndReplaceOptions options = new FindAndReplaceOptions()
+                .upsert().returnNew();
+
+        // convert transaction to Document, so that date can be formatted properly
+        Document doc = Utils.transactionToDoc(transaction);
+
+        return template.findAndReplace(query, doc, options,
+                Document.class, COLLECTION_TRANSACTIONS, Transaction.class);
+    }
+
+    public Transaction deleteTransaction(String transactionId) {
+        Query query = Query.query(
+                Criteria.where(FIELD_TRANSACTION_ID).is(transactionId));
+
+        return template.findAndRemove(
+                query, Transaction.class, COLLECTION_TRANSACTIONS);
+    }
+
+    // used for validating transactionId for update & delete operations
+    //
+    //    db.transactions.findOne(
+    //        { transactionId: "fd12d477-f346-4faa-8efc-fb1a7d8ee02f" },
+    //        { _id: 0, userId: 1 }
+    //    )
+    public String getUserIdFromTransactionId(String transactionId) {
+        Query query = Query.query(
+                Criteria.where(FIELD_TRANSACTION_ID).is(transactionId));
+
+        query.fields()
+                .exclude(FIELD_UNDERSCORE_ID)
+                .include(FIELD_USER_ID);
+
+        return template.findOne(query, Document.class, COLLECTION_TRANSACTIONS)
+                .getString(FIELD_USER_ID);
     }
 }

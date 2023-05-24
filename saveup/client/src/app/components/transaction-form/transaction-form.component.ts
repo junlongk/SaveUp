@@ -86,6 +86,11 @@ export class TransactionFormComponent implements OnInit {
   saveTransaction() {
     const transaction = this.form.value as Transaction;
 
+    // convert date format
+    // @ts-ignore
+    transaction.date = this.datepipe
+      .transform(transaction.date, 'yyyy-MM-dd');
+
     // prevent saving 'null' as form value
     if (transaction.outflow == null)
       transaction.outflow = 0;

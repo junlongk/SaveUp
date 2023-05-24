@@ -94,6 +94,70 @@ public class TransactionController {
     public ResponseEntity<String> modifyTransaction(
             Authentication authentication,
             @RequestBody Transaction transaction) {
-        return null;
+
+        String transactionId = transaction.getTransactionId();
+
+        // Check if transaction belongs to current user
+        String userIdFromAuth = authentication.getName();
+        String userIdFromDB = transactionSvc.getUserIdByTransactionId(transactionId);
+
+        if (!userIdFromAuth.equals(userIdFromDB)) {
+            JsonObject resp = Json.createObjectBuilder()
+                    .add("message",
+                            "Transaction ID %s does not belong to current user!"
+                                    .formatted(transactionId))
+                    .build();
+
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(resp.toString());
+        }
+
+        // transaction object from client-side do not carry userId info
+        transaction.setUserId(userIdFromDB);
+        String updated = transactionSvc.modifyTransaction(transactionId, transaction);
+
+        JsonObject resp = Json.createObjectBuilder()
+                .add("message", "Transaction ID: %s updated!".formatted(updated))
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(resp.toString());
     }
+
+    @DeleteMapping(path = "/delete/{transactionId}")
+    @ResponseBody
+    public ResponseEntity<String> deleteTransaction (
+        Authentication authentication,
+        @PathVariable String transactionId) {
+
+        // Check if transaction belongs to current user
+        String userIdFromAuth = authentication.getName();
+        String userIdFromDB = transactionSvc.getUserIdByTransactionId(transactionId);
+
+        if (!userIdFromAuth.equals(userIdFromDB)) {
+            JsonObject resp = Json.createObjectBuilder()
+                    .add("message",
+                            "Transaction ID %s does not belong to current user!"
+                                    .formatted(transactionId))
+                    .build();
+
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(resp.toString());
+        }
+
+        String deleted = transactionSvc.deleteTransaction(transactionId);
+
+        JsonObject resp = Json.createObjectBuilder()
+                .add("message", "Transaction ID: %s deleted!".formatted(deleted))
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(resp.toString());
+    }
+
+
 }
