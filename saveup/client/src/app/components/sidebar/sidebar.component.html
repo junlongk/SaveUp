@@ -2,6 +2,11 @@
   <div class="sidebar-user">
     <h2><em>SAVEUP</em></h2>
     <p>Welcome {{ userFirstName }}!</p>
+    <p-button label="Support us!"
+              icon="pi pi-heart-fill"
+              styleClass="p-button-outlined p-button-sm"
+              (click)="pay()">
+    </p-button>
     <p-button label="Sign out"
               icon="pi pi-sign-out"
               styleClass="p-button-outlined p-button-sm"

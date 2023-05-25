@@ -23,6 +23,10 @@ import { AccountFormComponent } from "./components/account-form/account-form.com
 import { TransactionService } from "./services/transaction.service";
 import { TransactionFormComponent } from "./components/transaction-form/transaction-form.component";
 import { DatePipe } from "@angular/common";
+import {StripeService} from "./services/stripe.service";
+import {PaymentCancelComponent} from "./components/payment-cancel/payment-cancel.component";
+import {PaymentSuccessComponent} from "./components/payment-success/payment-success.component";
+import {CheckoutComponent} from "./components/checkout/checkout.component";
 
 // used for enabling PrimeNG ripple effects throughout the app
 const initializeAppFactory = (primeConfig: PrimeNGConfig) => () => {
@@ -42,7 +46,10 @@ const initializeAppFactory = (primeConfig: PrimeNGConfig) => () => {
     AccountListComponent,
     AccountFormComponent,
     AccountDetailComponent,
-    UserPageComponent
+    UserPageComponent,
+    CheckoutComponent,
+    PaymentCancelComponent,
+    PaymentSuccessComponent
   ],
   imports: [
     BrowserModule,
@@ -63,6 +70,7 @@ const initializeAppFactory = (primeConfig: PrimeNGConfig) => () => {
     AccountService,
     TransactionService,
     DatePipe,
+    StripeService,
     {
       provide: APP_INITIALIZER,
       useFactory: initializeAppFactory,

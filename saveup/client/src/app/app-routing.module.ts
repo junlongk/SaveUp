@@ -9,6 +9,9 @@ import {BudgetsComponent} from "./components/budgets/budgets.component";
 import {AccountListComponent} from "./components/account-list/account-list.component";
 import {AuthGuard} from "./auth/auth.guard";
 import {AccountDetailComponent} from "./components/account-detail/account-detail.component";
+import {CheckoutComponent} from "./components/checkout/checkout.component";
+import {PaymentSuccessComponent} from "./components/payment-success/payment-success.component";
+import {PaymentCancelComponent} from "./components/payment-cancel/payment-cancel.component";
 
 const routes: Routes = [
   { path: '', component: MainPageComponent },
@@ -20,7 +23,12 @@ const routes: Routes = [
         { path: 'budgets', component: BudgetsComponent },
         { path: 'transactions', component: TransactionListComponent },
         { path: 'accounts', component: AccountListComponent },
-        { path: 'accounts/:accountId', component: AccountDetailComponent }
+        { path: 'accounts/:accountId', component: AccountDetailComponent },
+        { path: 'checkout', component: CheckoutComponent,
+          children: [
+            { path: 'success', component: PaymentSuccessComponent },
+            { path: 'cancel', component: PaymentCancelComponent }
+          ]}
       ]},
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
