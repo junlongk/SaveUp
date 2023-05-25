@@ -31,7 +31,7 @@
     <ng-template pTemplate="body" let-transaction>
       <tr>
         <td>{{ transaction.accountName }}</td>
-        <td>{{ transaction.date | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ transaction.date | date: 'dd-MM-yyyy' }}</td>
         <td>{{ transaction.payee }}</td>
         <td>{{ transaction.envelopeName }}</td>
         <td>{{ transaction.memo }}</td>

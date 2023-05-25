@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {MenuItem} from "primeng/api";
 import {AuthService} from "../../auth/auth.service";
 import {Router} from "@angular/router";
-import {JwtHelperService} from "@auth0/angular-jwt";
 import {StripeService} from "../../services/stripe.service";
 
 @Component({
