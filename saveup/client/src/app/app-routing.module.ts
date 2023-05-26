@@ -23,13 +23,11 @@ const routes: Routes = [
         { path: 'budgets', component: BudgetsComponent },
         { path: 'transactions', component: TransactionListComponent },
         { path: 'accounts', component: AccountListComponent },
-        { path: 'accounts/:accountId', component: AccountDetailComponent },
-        { path: 'checkout', component: CheckoutComponent,
-          children: [
-            { path: 'success', component: PaymentSuccessComponent },
-            { path: 'cancel', component: PaymentCancelComponent }
-          ]}
+        { path: 'accounts/:accountId', component: AccountDetailComponent }
       ]},
+  { path: 'checkout', component: CheckoutComponent, canActivate: [ AuthGuard ]},
+  { path: 'payment-success', component: PaymentSuccessComponent, canActivate: [ AuthGuard ] },
+  { path: 'payment-cancel', component: PaymentCancelComponent, canActivate: [ AuthGuard ] },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 

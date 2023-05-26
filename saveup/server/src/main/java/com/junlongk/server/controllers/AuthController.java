@@ -9,8 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Controller
 @CrossOrigin(origins = "*")
@@ -46,6 +49,38 @@ public class AuthController {
             @RequestBody LoginRequest request) {
 
         String jwtToken = authService.authenticate(request);
+
+        JsonObject resp = Json.createObjectBuilder()
+                .add("token", jwtToken)
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(resp.toString());
+    }
+
+    @PutMapping(path = "/premium", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<String> updatePremium(
+            Authentication authentication,
+            @RequestBody Map<String, String> userDetails) {
+
+        String userIdFromAuth = authentication.getName();
+        String userIdFromReq = userDetails.get("userId");
+
+        if (!userIdFromAuth.equals(userIdFromReq)) {
+            JsonObject resp = Json.createObjectBuilder()
+                    .add("message",
+                            "User ID %s does not belong to current user!"
+                                    .formatted(userIdFromReq))
+                    .build();
+
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(resp.toString());
+        }
+
+        String jwtToken = authService.updatePremium(userIdFromReq);
 
         JsonObject resp = Json.createObjectBuilder()
                 .add("token", jwtToken)

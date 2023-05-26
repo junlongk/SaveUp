@@ -1,1 +1,14 @@
-<p>Hey!</p>
+<p-card [style]="{ width: '500px' }" class="stripe-container">
+  <ng-container *ngIf="elementsOptions?.clientSecret as clientSecret">
+    <ngx-stripe-payment [clientSecret]="clientSecret"
+                        [elementsOptions]="elementsOptions">
+    </ngx-stripe-payment>
+  </ng-container>
+
+  <div class="button-container">
+    <p-button (click)="goBack()"
+              styleClass="p-button-outlined">CANCEL</p-button>
+    <p-button (click)="pay()"
+              styleClass="p-button-outlined">PAY</p-button>
+  </div>
+</p-card>

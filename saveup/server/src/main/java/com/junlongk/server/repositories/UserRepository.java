@@ -29,6 +29,10 @@ public class UserRepository {
             SELECT * FROM user_data WHERE user_id = ?
             """;
 
+    public static final String SQL_UPDATE_USER_TO_PREMIUM = """
+            UPDATE user_data SET role = 'PREMIUM' WHERE user_id = ?
+            """;
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -68,6 +72,16 @@ public class UserRepository {
             return Optional.empty();
     }
 
+    public boolean updateUserToPremium(String userId) {
 
+        int updated = jdbcTemplate.update(SQL_UPDATE_USER_TO_PREMIUM, new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps) throws SQLException {
+                ps.setString(1, userId);
+            }
+        });
+
+        return updated > 0;
+    }
 
 }

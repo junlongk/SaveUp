@@ -8,10 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Logger;
 
 @Service
@@ -52,7 +49,8 @@ public class AuthService {
 
         Map<String, String> extraJwtClaims = Map.of(
                 "email", user.getEmail(),
-                "firstName", user.getFirstName());
+                "firstName", user.getFirstName(),
+                "role", String.valueOf(user.getRole()));
 
         String jwtToken = jwtService.generateToken(extraJwtClaims, user);
 
@@ -75,7 +73,8 @@ public class AuthService {
 
         Map<String, String> extraJwtClaims = Map.of(
                 "email", user.getEmail(),
-                "firstName", user.getFirstName());
+                "firstName", user.getFirstName(),
+                "role", String.valueOf(user.getRole()));
 
         String jwtToken = jwtService.generateToken(extraJwtClaims, user);
 
@@ -83,5 +82,21 @@ public class AuthService {
         logger.info(">>> login jwt: %s\n".formatted(jwtToken));
 
         return jwtToken;
+    }
+
+    public String updatePremium(String userId) {
+        User user = userRepo.getUserByUserId(userId)
+                .orElseThrow();
+
+        userRepo.updateUserToPremium(userId);
+        user.setRole(Role.PREMIUM);
+
+        // regenerate jwtToken with 'Premium' role
+        Map<String, String> extraJwtClaims = Map.of(
+                "email", user.getEmail(),
+                "firstName", user.getFirstName(),
+                "role", String.valueOf(user.getRole()));
+
+        return jwtService.generateToken(extraJwtClaims, user);
     }
 }

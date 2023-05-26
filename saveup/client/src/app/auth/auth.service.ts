@@ -12,10 +12,10 @@ export class AuthService {
 
   private REGISTER_URL = "/api/auth/register";
   private LOGIN_URL = "/api/auth/login";
+  private PREMIUM_URL = "/api/auth/premium"
 
   constructor(private httpClient: HttpClient,
               private jwtHelperSvc: JwtHelperService) { }
-
 
   signupUser(user: User): Promise<any> {
     const headers = new HttpHeaders()
@@ -41,6 +41,16 @@ export class AuthService {
     localStorage.removeItem('token');
   }
 
+  updatePremium(userId: string): Promise<any> {
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json; charset=utf-8');
+
+    const body = JSON.stringify({ userId: userId });
+
+    return lastValueFrom(this.httpClient
+      .put(this.PREMIUM_URL, body, { headers }));
+  }
+
   isLoggedIn(): boolean {
     const jwtToken = localStorage.getItem('token');
 
@@ -55,5 +65,10 @@ export class AuthService {
   getFirstName(): string {
     const jwtToken = localStorage.getItem('token');
     return this.jwtHelperSvc.decodeToken(jwtToken as any)['firstName'];
+  }
+
+  getRole(): string {
+    const jwtToken = localStorage.getItem('token');
+    return this.jwtHelperSvc.decodeToken(jwtToken as any)['role'];
   }
 }

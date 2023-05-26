@@ -24,9 +24,9 @@ public class StripeController{
     @Autowired
     private StripeApiService stripeApiSvc;
 
-    @GetMapping(path = "/secret")
+    @GetMapping(path = "/create-payment-intent")
     @ResponseBody
-    public ResponseEntity<String> getSecret() throws StripeException {
+    public ResponseEntity<String> createPaymentIntent() throws StripeException {
         PaymentIntent intent = stripeApiSvc.createPaymentIntent();
 
         JsonObject resp = Json.createObjectBuilder()
@@ -34,7 +34,7 @@ public class StripeController{
                 .build();
 
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .status(HttpStatus.CREATED)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(resp.toString());
     }

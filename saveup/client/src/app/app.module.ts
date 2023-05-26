@@ -23,10 +23,12 @@ import { AccountFormComponent } from "./components/account-form/account-form.com
 import { TransactionService } from "./services/transaction.service";
 import { TransactionFormComponent } from "./components/transaction-form/transaction-form.component";
 import { DatePipe } from "@angular/common";
-import {StripeService} from "./services/stripe.service";
+import {StripePaymentService} from "./services/stripe-payment.service";
 import {PaymentCancelComponent} from "./components/payment-cancel/payment-cancel.component";
 import {PaymentSuccessComponent} from "./components/payment-success/payment-success.component";
 import {CheckoutComponent} from "./components/checkout/checkout.component";
+import {NgxStripeModule} from "ngx-stripe";
+import {environment} from "../environments/environment";
 
 // used for enabling PrimeNG ripple effects throughout the app
 const initializeAppFactory = (primeConfig: PrimeNGConfig) => () => {
@@ -63,14 +65,15 @@ const initializeAppFactory = (primeConfig: PrimeNGConfig) => () => {
         }
       }
     }),
-    PrimengModule
+    PrimengModule,
+    NgxStripeModule.forRoot(environment.stripe)
   ],
   providers: [
     AuthService,
     AccountService,
     TransactionService,
     DatePipe,
-    StripeService,
+    StripePaymentService,
     {
       provide: APP_INITIALIZER,
       useFactory: initializeAppFactory,

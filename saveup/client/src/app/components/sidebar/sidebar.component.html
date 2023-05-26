@@ -2,11 +2,21 @@
   <div class="sidebar-user">
     <h2><em>SAVEUP</em></h2>
     <p>Welcome {{ userFirstName }}!</p>
-    <p-button label="Support us!"
-              icon="pi pi-heart-fill"
-              styleClass="p-button-outlined p-button-sm"
-              (click)="pay()">
-    </p-button>
+
+    <div *ngIf="userRole == 'USER'">
+      <p-button label="Support us!"
+                icon="pi pi-heart-fill"
+                styleClass="p-button-outlined p-button-sm"
+                (click)="pay()">
+      </p-button>
+    </div>
+
+    <div *ngIf="userRole == 'PREMIUM'">
+      <p-button label="PREMIUM MEMBER"
+                styleClass="p-button-outlined p-button-sm">
+      </p-button>
+    </div>
+
     <p-button label="Sign out"
               icon="pi pi-sign-out"
               styleClass="p-button-outlined p-button-sm"

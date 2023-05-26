@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../auth/auth.service";
 import {Router} from "@angular/router";
-import {StripeService} from "../../services/stripe.service";
+import {StripePaymentService} from "../../services/stripe-payment.service";
 
 @Component({
   selector: 'app-sidebar',
@@ -11,13 +11,15 @@ import {StripeService} from "../../services/stripe.service";
 export class SidebarComponent implements OnInit {
 
   userFirstName!: string;
+  userRole!: string;
 
   constructor(private authSvc: AuthService,
               private router: Router,
-              private stripeSvc: StripeService) {
+              private stripePaymentSvc: StripePaymentService) {
   }
   ngOnInit():void {
     this.userFirstName = this.authSvc.getFirstName();
+    this.userRole = this.authSvc.getRole();
   }
 
   logOut() {
@@ -26,8 +28,9 @@ export class SidebarComponent implements OnInit {
   }
 
   pay() {
-    this.stripeSvc.getSecret()
-      .then(data =>
-    console.info(data));
+    // this.stripePaymentSvc.createPaymentIntent()
+    //   .then(data =>
+    // console.info(data));
+    this.router.navigate(['/checkout']);
   }
 }
