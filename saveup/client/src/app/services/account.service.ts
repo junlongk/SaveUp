@@ -45,7 +45,9 @@ export class AccountService {
       .put<Account>(this.MODIFY_ACCOUNT_URL, body, { headers }));
   }
 
-  deleteAccount(accountId: string): Promise<any> {
+  deleteAccount(account: Account): Promise<any> {
+    const accountId = account.accountId;
+
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json; charset=utf-8');
 

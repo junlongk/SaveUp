@@ -11,6 +11,7 @@ export class TransactionService {
   private TRANSACTIONS_URL = "/api/transactions";
   private MODIFY_TRANSACTION_URL = "/api/transactions/modify";
   private DELETE_TRANSACTION_URL = "/api/transactions/delete/";
+  private MODIFY_ACCOUNTNAME_URL = "/api/transactions/modifyaccountname";
 
   constructor(private httpClient: HttpClient) { }
 
@@ -51,5 +52,18 @@ export class TransactionService {
 
     return lastValueFrom(this.httpClient
       .delete<Transaction>(this.DELETE_TRANSACTION_URL + transactionId, { headers }));
+  }
+
+  modifyAccountName(accountId: string, newAccountName: string): Promise<any> {
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json; charset=utf-8');
+
+    const body = JSON.stringify({
+      accountId: accountId,
+      newAccountName: newAccountName
+    });
+
+    return lastValueFrom(this.httpClient
+      .put(this.MODIFY_ACCOUNTNAME_URL, body, { headers }));
   }
 }

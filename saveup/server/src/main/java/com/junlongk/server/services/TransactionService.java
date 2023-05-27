@@ -48,4 +48,8 @@ public class TransactionService {
     public String getUserIdByTransactionId(String transactionId) {
         return transactionRepo.getUserIdFromTransactionId(transactionId);
     }
+
+    public int updateAccountName(String accountId, String newAccountName) {
+        return transactionRepo.updateAccountName(accountId, newAccountName);
+    }
 }

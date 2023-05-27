@@ -2,6 +2,7 @@ package com.junlongk.server.repositories;
 
 import com.junlongk.server.Utils;
 import com.junlongk.server.models.Transaction;
+import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -10,6 +11,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -101,5 +103,18 @@ public class TransactionRepository {
 
         return template.findOne(query, Document.class, COLLECTION_TRANSACTIONS)
                 .getString(FIELD_USER_ID);
+    }
+
+    public int updateAccountName(String accountId, String newAccountName) {
+        Query query = Query.query(
+                Criteria.where(FIELD_ACCOUNT_ID).is(accountId));
+
+        Update updateOps = new Update()
+                .set(FIELD_ACCOUNT_NAME, newAccountName);
+
+        UpdateResult updateResult = template.updateMulti(
+                query, updateOps, Document.class, COLLECTION_TRANSACTIONS);
+
+        return (int) updateResult.getModifiedCount();
     }
 }

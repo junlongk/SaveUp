@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -159,5 +160,26 @@ public class TransactionController {
                 .body(resp.toString());
     }
 
+    @PutMapping(path = "/modifyaccountname")
+    @ResponseBody
+    public ResponseEntity<String> modifyAccountName (
+            Authentication authentication,
+            @RequestBody Map<String, String> modifyDetails) {
+
+        String accountId = modifyDetails.get("accountId");
+        String newAccountName = modifyDetails.get("newAccountName");
+
+        int updated = transactionSvc.updateAccountName(accountId, newAccountName);
+
+        JsonObject resp = Json.createObjectBuilder()
+                .add("message",
+                        "%d transactions updated with new account name!"
+                                .formatted(updated))
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(resp.toString());
+    }
 
 }

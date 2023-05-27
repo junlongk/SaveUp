@@ -8,7 +8,6 @@ import org.bson.Document;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 import static com.junlongk.server.Constants.*;
 
@@ -19,7 +18,6 @@ public class Utils {
                 .add("accountId", account.getAccountId())
                 .add("accountName", account.getAccountName())
                 .add("balance", account.getBalance())
-                .add("userId", account.getUserId())
                 .build();
     }
 

@@ -44,6 +44,7 @@ public class AccountController {
                 .add("message",
                         "Account '%s' (%s) created successfully!"
                         .formatted(account.getAccountName(), accountId))
+                .add("accountId", accountId)
                 .build();
 
         return ResponseEntity
