@@ -28,8 +28,8 @@ public class TransactionService {
     }
 
     public Optional<List<Transaction>> getAllTransactions(
-            String userId, int limit, int skip) {
-        return transactionRepo.getAllTransactions(userId, limit, skip);
+            String userId) {
+        return transactionRepo.getAllTransactions(userId);
     }
 
     public String modifyTransaction(

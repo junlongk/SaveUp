@@ -14,7 +14,12 @@
   </p-divider>
 
   <p-table [value]="transactions"
-           styleClass="p-datatable-striped p-datatable-sm">
+           styleClass="p-datatable-striped p-datatable-sm"
+           [paginator]="true"
+           [rows]="10"
+           [showCurrentPageReport]="true"
+           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} transactions"
+           [rowsPerPageOptions]="[5, 10, 20]">
     <ng-template pTemplate="header">
       <tr>
         <th>Account</th>

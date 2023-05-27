@@ -67,10 +67,8 @@ public class TransactionController {
                     .body(resp.toString());
         }
 
-        // need to get limit and offset from client-side
-        // currently hard-coded limit of 10 & offset of 0
         Optional<List<Transaction>> opt = transactionSvc.getAllTransactions(
-                userId, 10, 0);
+                userId);
 
         if (opt.isPresent()) {
             transactions = opt.get();

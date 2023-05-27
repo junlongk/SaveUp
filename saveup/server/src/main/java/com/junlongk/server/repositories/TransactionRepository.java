@@ -30,8 +30,7 @@ public class TransactionRepository {
         template.insert(doc, COLLECTION_TRANSACTIONS);
     }
 
-    public Optional<List<Transaction>> getAllTransactions(
-            String userId, int limit, int skip) {
+    public Optional<List<Transaction>> getAllTransactions(String userId) {
         Criteria criteria = Criteria.where(FIELD_USER_ID).is(userId);
 
         MatchOperation matchResult = Aggregation.match(criteria);
@@ -46,12 +45,12 @@ public class TransactionRepository {
 
         SortOperation sortResult = Aggregation.sort(Sort.Direction.DESC, FIELD_DATE);
 
-        LimitOperation limitResult = Aggregation.limit(limit);
-
-        SkipOperation skipResult = Aggregation.skip(skip);
+//        LimitOperation limitResult = Aggregation.limit(limit);
+//
+//        SkipOperation skipResult = Aggregation.skip(skip);
 
         Aggregation pipeline = Aggregation.newAggregation(matchResult,
-                sortResult, limitResult, skipResult);
+                sortResult);
 
         AggregationResults<Document> results = template.aggregate(
                 pipeline, COLLECTION_TRANSACTIONS, Document.class);
