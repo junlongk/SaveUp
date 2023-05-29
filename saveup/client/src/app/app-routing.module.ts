@@ -5,7 +5,6 @@ import {LoginComponent} from "./components/login/login.component";
 import {SignupComponent} from "./components/signup/signup.component";
 import {UserPageComponent} from "./components/user-page/user-page.component";
 import {TransactionListComponent} from "./components/transaction-list/transaction-list.component";
-import {ReportsComponent} from "./components/reports/reports.component";
 import {AccountListComponent} from "./components/account-list/account-list.component";
 import {AuthGuard} from "./auth/auth.guard";
 import {CheckoutComponent} from "./components/checkout/checkout.component";
@@ -19,7 +18,6 @@ const routes: Routes = [
   { path: 'user', component: UserPageComponent, canActivate: [ AuthGuard ],
       children: [
         { path: '', redirectTo: 'accounts', pathMatch: 'full' },
-        { path: 'reports', component: ReportsComponent },
         { path: 'transactions', component: TransactionListComponent },
         { path: 'accounts', component: AccountListComponent }
       ]},

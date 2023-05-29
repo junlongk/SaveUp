@@ -56,6 +56,9 @@ export class TransactionListComponent implements OnInit, OnDestroy {
   }
 
   private edit(transaction: Transaction) {
+    // clone transaction details before editing
+    const clonedTransaction: Transaction = transaction;
+
     this.ref = this.dialogSvc.open(TransactionFormComponent, {
       data: transaction, // pass in transaction details to form component
       header: 'Edit transaction',
@@ -72,6 +75,130 @@ export class TransactionListComponent implements OnInit, OnDestroy {
         this.transactionSvc.modifyTransaction(transaction)
           .then(data => {
             console.info('>>> msg from server: ', data.message);
+
+            // if account changed
+            if (clonedTransaction.accountId !== transaction.accountId) {
+
+              // Restore back old account balance
+              if (clonedTransaction.outflow > 0) {
+                // get back previous account's balance
+                const currentBalance =
+                  this.getBalanceByAccountId(clonedTransaction.accountId)
+
+                const newAccountDetails: Account = {
+                  accountId: clonedTransaction.accountId,
+                  accountName: clonedTransaction.accountName,
+                  // @ts-ignore
+                  balance: currentBalance + clonedTransaction.outflow,
+                  userId: this.userId
+                }
+
+                this.accountSvc.modifyAccount(newAccountDetails)
+                  .then(data => {
+                    console.info('>>> msg from server: ', data.message);
+                  });
+              }
+              else if (clonedTransaction.inflow > 0) {
+                // get back previous account's balance
+                const currentBalance =
+                  this.getBalanceByAccountId(clonedTransaction.accountId)
+
+                const newAccountDetails: Account = {
+                  accountId: clonedTransaction.accountId,
+                  accountName: clonedTransaction.accountName,
+                  // @ts-ignore
+                  balance: currentBalance - clonedTransaction.inflow,
+                  userId: this.userId
+                }
+
+                this.accountSvc.modifyAccount(newAccountDetails)
+                  .then(data => {
+                    console.info('>>> msg from server: ', data.message);
+                  });
+              }
+
+              // update new account balance
+              if (transaction.outflow > 0) {
+                const currentBalance =
+                  this.getBalanceByAccountId(transaction.accountId);
+
+                const newAccountDetails: Account = {
+                  accountId: transaction.accountId,
+                  accountName: transaction.accountName,
+                  // @ts-ignore
+                  balance: currentBalance - transaction.outflow,
+                  userId: this.userId
+                }
+
+                this.accountSvc.modifyAccount(newAccountDetails)
+                  .then(data => {
+                    console.info('>>> msg from server: ', data.message);
+                  });
+              }
+              else if (transaction.inflow > 0) {
+                const currentBalance =
+                  this.getBalanceByAccountId(transaction.accountId);
+
+                const newAccountDetails: Account = {
+                  accountId: transaction.accountId,
+                  accountName: transaction.accountName,
+                  // @ts-ignore
+                  balance: currentBalance + transaction.inflow,
+                  userId: this.userId
+                }
+
+                this.accountSvc.modifyAccount(newAccountDetails)
+                  .then(data => {
+                    console.info('>>> msg from server: ', data.message);
+                  });
+              }
+
+            }
+            // if account unchanged
+            else if (clonedTransaction.accountId == transaction.accountId) {
+              // get the difference between the difference of inflow & outflow
+              // for both old and new transaction and update balance accordingly
+              const oldDiff = clonedTransaction.inflow - clonedTransaction.outflow;
+              const newDiff = transaction.inflow - transaction.outflow;
+
+              const updatedDiff = newDiff - oldDiff;
+              // net increase
+              if (updatedDiff > 0) {
+                const currentBalance =
+                  this.getBalanceByAccountId(transaction.accountId)
+
+                const newAccountDetails: Account = {
+                  accountId: transaction.accountId,
+                  accountName: transaction.accountName,
+                  // @ts-ignore
+                  balance: currentBalance + updatedDiff,
+                  userId: this.userId
+                }
+
+                this.accountSvc.modifyAccount(newAccountDetails)
+                  .then(data => {
+                    console.info('>>> msg from server: ', data.message);
+                  });
+              }
+              // net decrease
+              else if (updatedDiff < 0) {
+                const currentBalance =
+                  this.getBalanceByAccountId(transaction.accountId)
+
+                const newAccountDetails: Account = {
+                  accountId: transaction.accountId,
+                  accountName: transaction.accountName,
+                  // @ts-ignore
+                  balance: currentBalance - updatedDiff,
+                  userId: this.userId
+                }
+
+                this.accountSvc.modifyAccount(newAccountDetails)
+                  .then(data => {
+                    console.info('>>> msg from server: ', data.message);
+                  });
+              }
+            }
 
             // refresh transaction list after submitting form
             this.getTransactions();
@@ -138,7 +265,7 @@ export class TransactionListComponent implements OnInit, OnDestroy {
           this.messageSvc.add({
             severity: 'success',
             summary: 'Success',
-            detail: 'Deleted 2 matching transaction'
+            detail: 'Deleted 2 matching transactions'
           });
         }
         else {
@@ -148,9 +275,9 @@ export class TransactionListComponent implements OnInit, OnDestroy {
               console.info('>>> msg from server: ', data.message);
 
               // revert the account balance back to original
-              if (transaction.inflow > 0) {
+              if (transaction.inflow > 0 && !transaction.memo.includes("Account deleted")) {
                 const currentBalance=
-                  this.getBalanceByAccountId(transaction.accountId)
+                  this.getBalanceByAccountId(transaction.accountId);
 
                 const newAccountDetails: Account = {
                   accountId: transaction.accountId,
@@ -166,7 +293,7 @@ export class TransactionListComponent implements OnInit, OnDestroy {
                   });
               }
               // reverse
-              else if (transaction.outflow > 0) {
+              else if (transaction.outflow > 0 && !transaction.memo.includes("Account deleted")) {
                 const currentBalance =
                   this.getBalanceByAccountId(transaction.accountId);
 
@@ -213,6 +340,42 @@ export class TransactionListComponent implements OnInit, OnDestroy {
         this.transactionSvc.addTransaction(transaction)
           .then( data => {
             console.info('>>> msg from server: ', data.message);
+
+            // make changes to the account
+            if (transaction.outflow > 0) {
+              const currentBalance=
+                this.getBalanceByAccountId(transaction.accountId)
+
+              const newAccountDetails: Account = {
+                accountId: transaction.accountId,
+                accountName: transaction.accountName,
+                // @ts-ignore
+                balance: currentBalance - transaction.outflow,
+                userId: this.userId
+              }
+
+              this.accountSvc.modifyAccount(newAccountDetails)
+                .then(data => {
+                  console.info('>>> msg from server: ', data.message);
+                });
+            }
+            else if (transaction.inflow > 0) {
+              const currentBalance=
+                this.getBalanceByAccountId(transaction.accountId)
+
+              const newAccountDetails: Account = {
+                accountId: transaction.accountId,
+                accountName: transaction.accountName,
+                // @ts-ignore
+                balance: currentBalance + transaction.inflow,
+                userId: this.userId
+              }
+
+              this.accountSvc.modifyAccount(newAccountDetails)
+                .then(data => {
+                  console.info('>>> msg from server: ', data.message);
+                });
+            }
 
             // refresh transaction list after submitting form
             this.getTransactions();

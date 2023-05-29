@@ -7,7 +7,6 @@ import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { MainPageComponent } from './components/main-page/main-page.component';
-import { ReportsComponent } from './components/reports/reports.component';
 import { TransactionListComponent } from './components/transaction-list/transaction-list.component';
 import { AccountListComponent } from './components/account-list/account-list.component';
 import { UserPageComponent } from './components/user-page/user-page.component';
@@ -43,7 +42,6 @@ const initializeAppFactory = (primeConfig: PrimeNGConfig) => () => {
     SignupComponent,
     SidebarComponent,
     MainPageComponent,
-    ReportsComponent,
     TransactionListComponent,
     TransactionFormComponent,
     AccountListComponent,

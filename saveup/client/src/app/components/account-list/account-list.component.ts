@@ -240,7 +240,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
             } else {
               transaction = {
                 accountId: data.accountId,
-                accountName: data.accountName,
+                accountName: account.accountName,
                 // @ts-ignore
                 date: this.datepipe
                   .transform(new Date(), 'yyyy-MM-dd'),
@@ -296,8 +296,8 @@ export class AccountListComponent implements OnInit, OnDestroy {
   createTransfer() {
     this.ref = this.dialogSvc.open(AccountTransferFormComponent, {
       header: 'New Transfer',
-      width: '450px',
-      height: '480px',
+      width: '300px',
+      height: '500px',
       contentStyle: { overflow: 'auto' },
       baseZIndex: 10000
     });
