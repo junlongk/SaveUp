@@ -1,0 +1,63 @@
+version: "3.9"
+
+services:
+  mongodb:
+    image: mongo:latest
+    environment:
+      MONGODB_INITDB_ROOT_USERNAME: junlong
+      MONGODB_INITDB_ROOT_PASSWORD: docker_P455
+#    ports:
+#      - "27018:27017"
+    volumes:
+      - ./mongodb_data:/data/db
+    restart: always
+    healthcheck:
+      test: echo 'db.runCommand({serverStatus:1}).ok' | mongosh admin -u $MONGODB_INITDB_ROOT_USERNAME -p $MONGODB_INITDB_ROOT_PASSWORD --quiet | grep 1
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  mysql:
+    image: mysql:8.0.32-oracle
+#    ports:
+#      - "3307:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: saveup
+      MYSQL_USER: junlong
+      MYSQL_PASSWORD: docker_P455
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+      - ./SQL/init-schema.sql:/docker-entrypoint-initdb.d/init-schema.sql
+    restart: always
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
+
+  saveup-client:
+    image: junlongk/saveup-client
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "4201:80"
+    depends_on:
+      - saveup-server
+
+  saveup-server:
+    image: junlongk/saveup-server
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    depends_on:
+      - mysql
+      - mongodb
+    environment:
+      SPRING_DATASOURCE_USERNAME: junlong
+      SPRING_DATASOURCE_PASSWORD: docker_P455
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/saveup
+      MONGO_URL: mongodb://mongodb:27017/saveup?authSource=admin
+      STRIPE_PUB_KEY: <TO INPUT BEFORE BUILDING!!>
