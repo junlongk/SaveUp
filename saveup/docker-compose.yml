@@ -6,8 +6,8 @@ services:
     environment:
       MONGODB_INITDB_ROOT_USERNAME: junlong
       MONGODB_INITDB_ROOT_PASSWORD: docker_P455
-#    ports:
-#      - "27018:27017"
+    ports:
+      - "27018:27017"
     volumes:
       - ./mongodb_data:/data/db
     restart: always
@@ -19,8 +19,8 @@ services:
 
   mysql:
     image: mysql:8.0.32-oracle
-#    ports:
-#      - "3307:3306"
+    ports:
+      - "3307:3306"
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_DATABASE: saveup
@@ -41,7 +41,7 @@ services:
       context: ./client
       dockerfile: Dockerfile
     ports:
-      - "4201:80"
+      - "80:80"
     depends_on:
       - saveup-server
 
