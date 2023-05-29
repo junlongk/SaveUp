@@ -14,6 +14,7 @@ import { ConfirmDialogModule } from "primeng/confirmdialog";
 import { InputNumberModule } from "primeng/inputnumber";
 import { CalendarModule } from "primeng/calendar";
 import { ChartModule } from "primeng/chart";
+import {DropdownModule} from "primeng/dropdown";
 
 @NgModule({
   declarations: [],
@@ -34,7 +35,8 @@ import { ChartModule } from "primeng/chart";
     ToastModule,
     ConfirmDialogModule,
     CalendarModule,
-    ChartModule
+    ChartModule,
+    DropdownModule,
   ]
 })
 export class PrimengModule { }

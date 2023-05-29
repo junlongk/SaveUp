@@ -3,6 +3,9 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Transaction} from "../../models/Transaction";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {DatePipe} from "@angular/common";
+import {Account} from "../../models/Account";
+import {AccountService} from "../../services/account.service";
+import {AuthService} from "../../auth/auth.service";
 
 @Component({
   selector: 'app-transaction-form',
@@ -12,13 +15,20 @@ import {DatePipe} from "@angular/common";
 export class TransactionFormComponent implements OnInit {
   form!: FormGroup;
   transaction!: Transaction;
+  userId!: string;
+  accounts: Account[] = [];
 
   constructor(private fb: FormBuilder,
               public ref: DynamicDialogRef,
               public config: DynamicDialogConfig,
-              private datepipe: DatePipe) { }
+              private datepipe: DatePipe,
+              private accountSvc: AccountService,
+              private authSvc: AuthService,) { }
 
   ngOnInit():void {
+    this.userId = this.authSvc.getUserId();
+    this.getAccounts();
+
     this.form = this.createForm();
 
     // get transaction details when form is in editing mode
@@ -37,11 +47,9 @@ export class TransactionFormComponent implements OnInit {
       const accountIdCtrl = this.form.get('accountId') as FormControl;
       const accountNameCtrl = this.form.get('accountName') as FormControl;
       const dateCtrl = this.form.get('date') as FormControl;
-      const payeeCtrl = this.form.get('payee') as FormControl;
-      const payeeAccountIdCtrl = this.form.get('payeeAccountId') as FormControl;
-      const payeeAccountNameCtrl = this.form.get('payeeAccountName') as FormControl;
-      const envelopeIdCtrl = this.form.get('envelopeId') as FormControl;
-      const envelopeNameCtrl = this.form.get('envelopeName') as FormControl;
+      const categoryCtrl = this.form.get('category') as FormControl;
+      const transferAccountIdCtrl = this.form.get('transferAccountId') as FormControl;
+      const transferAccountNameCtrl = this.form.get('transferAccountName') as FormControl;
       const memoCtrl = this.form.get('memo') as FormControl;
       const outflowCtrl = this.form.get('outflow') as FormControl;
       const inflowCtrl = this.form.get('inflow') as FormControl;
@@ -50,11 +58,9 @@ export class TransactionFormComponent implements OnInit {
       accountIdCtrl.setValue(this.transaction.accountId);
       accountNameCtrl.setValue(this.transaction.accountName);
       dateCtrl.setValue(formattedDate);
-      payeeCtrl.setValue(this.transaction.payee);
-      payeeAccountIdCtrl.setValue(this.transaction.payeeAccountId);
-      payeeAccountNameCtrl.setValue(this.transaction.payeeAccountName);
-      envelopeIdCtrl.setValue(this.transaction.envelopeId);
-      envelopeNameCtrl.setValue(this.transaction.envelopeName);
+      categoryCtrl.setValue(this.transaction.category);
+      transferAccountIdCtrl.setValue(this.transaction.transferAccountId);
+      transferAccountNameCtrl.setValue(this.transaction.transferAccountName);
       memoCtrl.setValue(this.transaction.memo);
       outflowCtrl.setValue(this.transaction.outflow);
       inflowCtrl.setValue(this.transaction.inflow);
@@ -69,14 +75,11 @@ export class TransactionFormComponent implements OnInit {
       accountId: this.fb.control<string>(''),
       accountName: this.fb.control<string>('', [Validators.required]),
       date: this.fb.control<Date | null>(null, [Validators.required]),
-      payee: this.fb.control<string>('', [Validators.required]),
-      // payee accountId & accountName not mandatory as they are for transfers only
-      payeeAccountId: this.fb.control<string>(''),
-      payeeAccountName: this.fb.control<string>(''),
-      // envelopeId is not mandatory as it is hidden field
-      // envelopeName is required for "Envelope not needed" for transfers
-      envelopeId: this.fb.control<string>(''),
-      envelopeName: this.fb.control<string>('', [Validators.required]),
+      category: this.fb.control<string>('', [Validators.required]),
+      // transferAccountId is not mandatory as not every transaction is a transfer
+      // transferAccountName is not mandatory as not every transaction is a transfer
+      transferAccountId: this.fb.control<string>(''),
+      transferAccountName: this.fb.control<string>(''),
       // memo is optional
       memo: this.fb.control<string>(''),
       // outflow & inflow is either-or field, hence need cross-field validation
@@ -110,12 +113,51 @@ export class TransactionFormComponent implements OnInit {
 
     console.info('>>> saving new date.. ', transaction.date);
 
+    // if both inflow and outflow has values, then find the difference
+    // and set inflow/outflow accordingly
+    if (transaction.outflow && transaction.inflow) {
+      let difference = transaction.inflow - transaction.outflow;
+      if (difference > 0) {
+        transaction.inflow = difference;
+        transaction.outflow = 0;
+      }
+      else if (difference < 0) {
+        transaction.outflow = difference * -1;
+        transaction.inflow = 0;
+      }
+    }
+
     // prevent saving 'null' as form value
     if (transaction.outflow == null)
       transaction.outflow = 0;
     if (transaction.inflow == null)
       transaction.inflow = 0;
 
+    // Get accountId from accountName field and include inside transaction
+    // @ts-ignore
+    transaction.accountId = this.getAccountIdByAccountName(transaction.accountName);
+
     this.ref.close(transaction);
+  }
+
+  // get list of accounts details for form dropdown
+  private getAccounts() {
+    this.accountSvc.getAccounts(this.userId)
+      .then(data => {
+        this.accounts = data;
+        console.info('>>> accounts: ', this.accounts);
+      })
+      .catch(error => {
+          console.error(error.error.message);
+          // TEMP FIX: clear accounts array after last item is deleted
+          this.accounts = [];
+        }
+      );
+  }
+
+  private getAccountIdByAccountName(accountName: string) {
+    let account = this.accounts.find(
+      account => account.accountName === accountName);
+    return account ? account.accountId : null;
   }
 }

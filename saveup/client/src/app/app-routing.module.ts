@@ -8,7 +8,6 @@ import {TransactionListComponent} from "./components/transaction-list/transactio
 import {ReportsComponent} from "./components/reports/reports.component";
 import {AccountListComponent} from "./components/account-list/account-list.component";
 import {AuthGuard} from "./auth/auth.guard";
-import {AccountDetailComponent} from "./components/account-detail/account-detail.component";
 import {CheckoutComponent} from "./components/checkout/checkout.component";
 import {PaymentSuccessComponent} from "./components/payment-success/payment-success.component";
 import {PaymentCancelComponent} from "./components/payment-cancel/payment-cancel.component";
@@ -22,8 +21,7 @@ const routes: Routes = [
         { path: '', redirectTo: 'accounts', pathMatch: 'full' },
         { path: 'reports', component: ReportsComponent },
         { path: 'transactions', component: TransactionListComponent },
-        { path: 'accounts', component: AccountListComponent },
-        { path: 'accounts/:accountId', component: AccountDetailComponent }
+        { path: 'accounts', component: AccountListComponent }
       ]},
   { path: 'checkout', component: CheckoutComponent, canActivate: [ AuthGuard ]},
   { path: 'payment-success', component: PaymentSuccessComponent, canActivate: [ AuthGuard ] },

@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -18,7 +18,6 @@ import { JwtModule } from "@auth0/angular-jwt";
 import { PrimengModule } from "./primeng.module";
 import { PrimeNGConfig } from "primeng/api";
 import { AccountService } from "./services/account.service";
-import { AccountDetailComponent } from "./components/account-detail/account-detail.component";
 import { AccountFormComponent } from "./components/account-form/account-form.component";
 import { TransactionService } from "./services/transaction.service";
 import { TransactionFormComponent } from "./components/transaction-form/transaction-form.component";
@@ -29,6 +28,7 @@ import {PaymentSuccessComponent} from "./components/payment-success/payment-succ
 import {CheckoutComponent} from "./components/checkout/checkout.component";
 import {NgxStripeModule} from "ngx-stripe";
 import {environment} from "../environments/environment";
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 // used for enabling PrimeNG ripple effects throughout the app
 const initializeAppFactory = (primeConfig: PrimeNGConfig) => () => {
@@ -47,7 +47,6 @@ const initializeAppFactory = (primeConfig: PrimeNGConfig) => () => {
     TransactionFormComponent,
     AccountListComponent,
     AccountFormComponent,
-    AccountDetailComponent,
     UserPageComponent,
     CheckoutComponent,
     PaymentCancelComponent,
@@ -66,7 +65,13 @@ const initializeAppFactory = (primeConfig: PrimeNGConfig) => () => {
       }
     }),
     PrimengModule,
-    NgxStripeModule.forRoot(environment.stripe)
+    NgxStripeModule.forRoot(environment.stripe),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [
     AuthService,

@@ -3,25 +3,29 @@
     <h2><em>SAVEUP</em></h2>
     <p>Welcome {{ userFirstName }}!</p>
 
-    <div *ngIf="userRole == 'USER'">
-      <p-button label="Support us!"
-                icon="pi pi-heart-fill"
+    <div class="button-container">
+      <div *ngIf="userRole == 'USER'">
+        <p-button label="Support us!"
+                  icon="pi pi-heart-fill"
+                  styleClass="p-button-outlined p-button-sm"
+                  (click)="pay()">
+        </p-button>
+      </div>
+
+      <div *ngIf="userRole == 'PREMIUM'">
+        <p-button label="PREMIUM"
+                  icon="pi pi-star-fill"
+                  styleClass="p-button-outlined p-button-sm">
+        </p-button>
+      </div>
+
+      <p-button label="Sign out"
+                icon="pi pi-sign-out"
                 styleClass="p-button-outlined p-button-sm"
-                (click)="pay()">
+                (click)="logOut()">
       </p-button>
     </div>
 
-    <div *ngIf="userRole == 'PREMIUM'">
-      <p-button label="PREMIUM MEMBER"
-                styleClass="p-button-outlined p-button-sm">
-      </p-button>
-    </div>
-
-    <p-button label="Sign out"
-              icon="pi pi-sign-out"
-              styleClass="p-button-outlined p-button-sm"
-              (click)="logOut()">
-    </p-button>
   </div>
 
   <div class="sidebar-links">

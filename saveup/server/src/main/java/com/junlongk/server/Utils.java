@@ -27,11 +27,9 @@ public class Utils {
                 .add("accountId", transaction.getAccountId())
                 .add("accountName", transaction.getAccountName())
                 .add("date", String.valueOf(transaction.getDate()))
-                .add("payee", transaction.getPayee())
-                .add("payeeAccountId", transaction.getPayeeAccountId())
-                .add("payeeAccountName", transaction.getPayeeAccountName())
-                .add("envelopeId", transaction.getEnvelopeId())
-                .add("envelopeName", transaction.getEnvelopeName())
+                .add("category", transaction.getCategory())
+                .add("transferAccountId", transaction.getTransferAccountId())
+                .add("transferAccountName", transaction.getTransferAccountName())
                 .add("memo", transaction.getMemo())
                 .add("outflow", transaction.getOutflow())
                 .add("inflow", transaction.getInflow())
@@ -44,11 +42,9 @@ public class Utils {
         document.put("accountId", transaction.getAccountId());
         document.put("accountName", transaction.getAccountName());
         document.put("date", transaction.getDate().toString());
-        document.put("payee", transaction.getPayee());
-        document.put("payeeAccountId", transaction.getPayeeAccountId());
-        document.put("payeeAccountName", transaction.getPayeeAccountName());
-        document.put("envelopeId", transaction.getEnvelopeId());
-        document.put("envelopeName", transaction.getEnvelopeName());
+        document.put("category", transaction.getCategory());
+        document.put("transferAccountId", transaction.getTransferAccountId());
+        document.put("transferAccountName", transaction.getTransferAccountName());
         document.put("memo", transaction.getMemo());
         document.put("outflow", transaction.getOutflow());
         document.put("inflow", transaction.getInflow());
@@ -62,11 +58,9 @@ public class Utils {
         transaction.setAccountId(doc.getString(FIELD_ACCOUNT_ID));
         transaction.setAccountName(doc.getString(FIELD_ACCOUNT_NAME));
         transaction.setDate(LocalDate.parse(doc.getString(FIELD_DATE)));
-        transaction.setPayee(doc.getString(FIELD_PAYEE));
-        transaction.setPayeeAccountId(doc.getString(FIELD_PAYEE_ACCOUNT_ID));
-        transaction.setPayeeAccountName(doc.getString(FIELD_PAYEE_ACCOUNT_NAME));
-        transaction.setEnvelopeId(doc.getString(FIELD_ENVELOPE_ID));
-        transaction.setEnvelopeName(doc.getString(FIELD_ENVELOPE_NAME));
+        transaction.setCategory(doc.getString(FIELD_CATEGORY));
+        transaction.setTransferAccountId(doc.getString(FIELD_TRANSFER_ACCOUNT_ID));
+        transaction.setTransferAccountName(doc.getString(FIELD_TRANSFER_ACCOUNT_NAME));
         transaction.setMemo(doc.getString(FIELD_MEMO));
         transaction.setOutflow(new BigDecimal(doc.getString(FIELD_OUTFLOW)));
         transaction.setInflow(new BigDecimal(doc.getString(FIELD_INFLOW)));

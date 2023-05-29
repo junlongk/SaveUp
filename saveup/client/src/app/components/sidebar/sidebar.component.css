@@ -25,6 +25,14 @@ a {
   border-bottom-right-radius: 14px;
 }
 
+.button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 120px;
+  align-items: center;
+}
+
 .sidebar-links {
   display: flex;
   flex-direction: column;

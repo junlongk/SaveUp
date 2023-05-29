@@ -5,13 +5,13 @@
       <input type="hidden" formControlName="accountId" />
 
       <div class="input-row-group">
-        <!-- accountName needs to be dropdown selector   -->
         <div class="field input-container">
           <label for="accountName">Account</label>
-          <input pInputText
-                 type="text"
-                 id="accountName"
-                 formControlName="accountName" />
+          <p-dropdown formControlName="accountName"
+                      [options]="accounts"
+                      id="accountName"
+                      optionLabel="accountName"
+                      optionValue="accountName"></p-dropdown>
         </div>
 
         <div class="field input-container">
@@ -24,30 +24,26 @@
       </div>
 
       <div class="input-row-group">
-        <!-- payee needs to be dropdown selector-->
+        <!-- category needs to be dropdown selector-->
         <div class="field input-container">
-          <label for="payee">Payee</label>
+          <label for="category">Category</label>
           <input pInputText
                  type="text"
-                 id="payee"
-                 formControlName="payee" />
+                 id="category"
+                 formControlName="category" />
         </div>
 
-        <!-- envelopeName needs to be dropdown selector-->
+        <!-- transferAccount needs to be dropdown selector-->
         <div class="field input-container">
-          <label for="envelopeName">Envelope</label>
+          <label for="transferAccount">Transfer</label>
           <input pInputText
                  type="text"
-                 id="envelopeName"
-                 formControlName="envelopeName" />
+                 id="transferAccount"
+                 formControlName="transferAccountName" />
         </div>
       </div>
 
-      <input type="hidden" formControlName="payeeAccountId" />
-
-      <input type="hidden" formControlName="payeeAccountName" />
-
-      <input type="hidden" formControlName="envelopeId" />
+      <input type="hidden" formControlName="transferAccountId" />
 
       <div class="input-row-group">
         <div class="field input-container">
@@ -80,8 +76,6 @@
             formControlName="inflow"></p-inputNumber>
         </div>
       </div>
-
-      <input type="hidden" formControlName="accountId" />
 
       <p-button type="submit"
                 [disabled]="form.invalid"

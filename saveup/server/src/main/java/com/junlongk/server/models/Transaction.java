@@ -9,11 +9,9 @@ public class Transaction {
     private String accountId;
     private String accountName;
     private LocalDate date;
-    private String payee;
-    private String payeeAccountId;
-    private String payeeAccountName;
-    private String envelopeId;
-    private String envelopeName;
+    private String category;
+    private String transferAccountId;
+    private String transferAccountName;
     private String memo;
     private BigDecimal outflow;
     private BigDecimal inflow;
@@ -54,44 +52,28 @@ public class Transaction {
         this.date = date;
     }
 
-    public String getPayee() {
-        return payee;
+    public String getCategory() {
+        return category;
     }
 
-    public void setPayee(String payee) {
-        this.payee = payee;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public String getPayeeAccountId() {
-        return payeeAccountId;
+    public String getTransferAccountId() {
+        return transferAccountId;
     }
 
-    public void setPayeeAccountId(String payeeAccountId) {
-        this.payeeAccountId = payeeAccountId;
+    public void setTransferAccountId(String transferAccountId) {
+        this.transferAccountId = transferAccountId;
     }
 
-    public String getPayeeAccountName() {
-        return payeeAccountName;
+    public String getTransferAccountName() {
+        return transferAccountName;
     }
 
-    public void setPayeeAccountName(String payeeAccountName) {
-        this.payeeAccountName = payeeAccountName;
-    }
-
-    public String getEnvelopeId() {
-        return envelopeId;
-    }
-
-    public void setEnvelopeId(String envelopeId) {
-        this.envelopeId = envelopeId;
-    }
-
-    public String getEnvelopeName() {
-        return envelopeName;
-    }
-
-    public void setEnvelopeName(String envelopeName) {
-        this.envelopeName = envelopeName;
+    public void setTransferAccountName(String transferAccountName) {
+        this.transferAccountName = transferAccountName;
     }
 
     public String getMemo() {
@@ -129,11 +111,10 @@ public class Transaction {
     @Override
     public String toString() {
         return ("Transaction{transactionId='%s', accountId='%s', accountName='%s', " +
-                "date=%s, payee='%s', payeeAccountId='%s', payeeAccountName='%s', " +
-                "envelopeId='%s', envelopeName='%s', memo='%s', outflow=%s, " +
-                "inflow=%s, userId='%s'}")
-                .formatted(transactionId, accountId, accountName, date, payee,
-                        payeeAccountId, payeeAccountName, envelopeId, envelopeName,
-                        memo, outflow, inflow, userId);
+                "date=%s, category='%s', transferAccountId='%s', " +
+                "transferAccountName='%s', memo='%s', outflow=%s, inflow=%s, userId='%s'}")
+                .formatted(transactionId, accountId, accountName, date, category,
+                        transferAccountId, transferAccountName, memo, outflow,
+                        inflow, userId);
     }
 }

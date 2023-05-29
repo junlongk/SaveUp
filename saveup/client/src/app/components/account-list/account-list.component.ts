@@ -38,14 +38,6 @@ export class AccountListComponent implements OnInit, OnDestroy {
 
     this.menuItems = [
       {
-        label: 'Details',
-        icon: 'pi pi-list',
-        command: () => {
-          // pass in account details for routing
-          this.goToAccountPage(this.selectedAccount);
-        }
-      },
-      {
         label: 'Edit',
         icon: 'pi pi-pencil',
         command: () => {
@@ -62,11 +54,6 @@ export class AccountListComponent implements OnInit, OnDestroy {
         }
       }
     ];
-  }
-
-  private goToAccountPage(account: Account) {
-    // console.info('>>> navigating to account page:', account.accountId);
-    this.router.navigate(['/user/accounts', account.accountId]);
   }
 
   private edit(account: Account) {
@@ -106,11 +93,9 @@ export class AccountListComponent implements OnInit, OnDestroy {
                   // @ts-ignore
                   date: this.datepipe
                     .transform(new Date(), 'yyyy-MM-dd'),
-                  payee: "Manual Adjustment",
-                  payeeAccountId: "",
-                  payeeAccountName: "",
-                  envelopeId: "",
-                  envelopeName: "",
+                  category: "Manual Adjustment",
+                  transferAccountId: "",
+                  transferAccountName: "",
                   memo: "",
                   outflow: 0,
                   inflow: difference
@@ -122,11 +107,9 @@ export class AccountListComponent implements OnInit, OnDestroy {
                   // @ts-ignore
                   date: this.datepipe
                     .transform(new Date(), 'yyyy-MM-dd'),
-                  payee: "Manual Adjustment",
-                  payeeAccountId: "",
-                  payeeAccountName: "",
-                  envelopeId: "",
-                  envelopeName: "",
+                  category: "Manual Adjustment",
+                  transferAccountId: "",
+                  transferAccountName: "",
                   memo: "",
                   outflow: difference * -1,
                   inflow: 0
@@ -181,11 +164,9 @@ export class AccountListComponent implements OnInit, OnDestroy {
               // @ts-ignore
               date: this.datepipe
                 .transform(new Date(), 'yyyy-MM-dd'),
-              payee: "Manual Adjustment",
-              payeeAccountId: "",
-              payeeAccountName: "",
-              envelopeId: "",
-              envelopeName: "",
+              category: "Manual Adjustment",
+              transferAccountId: "",
+              transferAccountName: "",
               memo: "Account deleted",
               outflow: account.balance,
               inflow: 0
@@ -243,11 +224,9 @@ export class AccountListComponent implements OnInit, OnDestroy {
                 // @ts-ignore
                 date: this.datepipe
                   .transform(new Date(), 'yyyy-MM-dd'),
-                payee: "Starting Balance",
-                payeeAccountId: "",
-                payeeAccountName: "",
-                envelopeId: "",
-                envelopeName: "Inflow: Ready to Assign",
+                category: "Starting Balance",
+                transferAccountId: "",
+                transferAccountName: "",
                 memo: "",
                 outflow: 0,
                 inflow: account.balance
@@ -259,11 +238,9 @@ export class AccountListComponent implements OnInit, OnDestroy {
                 // @ts-ignore
                 date: this.datepipe
                   .transform(new Date(), 'yyyy-MM-dd'),
-                payee: "Starting Balance",
-                payeeAccountId: "",
-                payeeAccountName: "",
-                envelopeId: "",
-                envelopeName: "Inflow: Ready to Assign",
+                category: "Starting Balance",
+                transferAccountId: "",
+                transferAccountName: "",
                 memo: "",
                 outflow: account.balance * -1,
                 inflow: 0
