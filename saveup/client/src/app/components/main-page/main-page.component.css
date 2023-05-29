@@ -8,6 +8,7 @@
 .main-topbar-logo {
   font-size: 26px;
   font-weight: bolder;
+  font-style: italic;
 }
 
 .main-topbar-auth {
@@ -25,4 +26,31 @@
   background-repeat: no-repeat;
   background-size:cover;
   opacity: 0.5;
+}
+
+.cta-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px;
+  background: black;
+  opacity: 60%;
+  width: 100vw;
+}
+
+.cta {
+  font-size: 48px;
+  font-weight: bolder;
+  padding: 20px;
+}
+
+.cta2 {
+  font-size: 30px;
+  padding: 20px;
+
 }

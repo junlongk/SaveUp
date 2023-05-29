@@ -28,6 +28,7 @@ public class Utils {
                 .add("accountName", transaction.getAccountName())
                 .add("date", String.valueOf(transaction.getDate()))
                 .add("category", transaction.getCategory())
+                .add("transferId", transaction.getTransferId())
                 .add("transferAccountId", transaction.getTransferAccountId())
                 .add("transferAccountName", transaction.getTransferAccountName())
                 .add("memo", transaction.getMemo())
@@ -43,6 +44,7 @@ public class Utils {
         document.put("accountName", transaction.getAccountName());
         document.put("date", transaction.getDate().toString());
         document.put("category", transaction.getCategory());
+        document.put("transferId", transaction.getTransferId());
         document.put("transferAccountId", transaction.getTransferAccountId());
         document.put("transferAccountName", transaction.getTransferAccountName());
         document.put("memo", transaction.getMemo());
@@ -59,6 +61,7 @@ public class Utils {
         transaction.setAccountName(doc.getString(FIELD_ACCOUNT_NAME));
         transaction.setDate(LocalDate.parse(doc.getString(FIELD_DATE)));
         transaction.setCategory(doc.getString(FIELD_CATEGORY));
+        transaction.setTransferId(doc.getString(FIELD_TRANSFER_ID));
         transaction.setTransferAccountId(doc.getString(FIELD_TRANSFER_ACCOUNT_ID));
         transaction.setTransferAccountName(doc.getString(FIELD_TRANSFER_ACCOUNT_NAME));
         transaction.setMemo(doc.getString(FIELD_MEMO));

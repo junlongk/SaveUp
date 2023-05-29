@@ -187,8 +187,8 @@ public class AccountController {
 
         // Get details from request
         BigDecimal amount = BigDecimal.valueOf(Double.parseDouble(transferDetails.get("amount")));
-        String fromAccountId = transferDetails.get("fromAccountId");
-        String toAccountId = transferDetails.get("toAccountId");
+        String fromAccountId = transferDetails.get("accountFromId");
+        String toAccountId = transferDetails.get("accountToId");
 
         // Check if both accounts belong to current user
         String userId = authentication.getName();
@@ -212,11 +212,12 @@ public class AccountController {
                     .body(resp.toString());
         }
 
-        accountSvc.updateBalanceByTransfer(amount,
+        String transferId = accountSvc.updateBalanceByTransfer(amount,
                 fromAccountId, toAccountId);
 
         JsonObject resp = Json.createObjectBuilder()
                 .add("message", "Transfer updated!")
+                .add("transferId", transferId)
                 .build();
 
         return ResponseEntity

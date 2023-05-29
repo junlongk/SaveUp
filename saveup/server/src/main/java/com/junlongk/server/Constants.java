@@ -12,10 +12,12 @@ public class Constants {
     public static final String FIELD_ACCOUNT_NAME = "accountName";
     public static final String FIELD_DATE = "date";
     public static final String FIELD_CATEGORY = "category";
+    public static final String FIELD_TRANSFER_ID = "transferId";
     public static final String FIELD_TRANSFER_ACCOUNT_ID = "transferAccountId";
     public static final String FIELD_TRANSFER_ACCOUNT_NAME = "transferAccountName";
     public static final String FIELD_MEMO = "memo";
     public static final String FIELD_OUTFLOW = "outflow";
     public static final String FIELD_INFLOW = "inflow";
     public static final String FIELD_USER_ID = "userId";
+    public static final String FIELD_CATEGORIES = "categories";
 }

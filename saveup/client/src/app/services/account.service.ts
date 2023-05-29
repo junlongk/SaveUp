@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { lastValueFrom } from "rxjs";
 import { Account } from "../models/Account";
+import {Transfer} from "../models/Transfer";
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ export class AccountService {
   private ACCOUNTS_URL = "/api/accounts";
   private MODIFY_ACCOUNT_URL = "/api/accounts/modify";
   private DELETE_ACCOUNT_URL = "/api/accounts/delete/";
+  private TRANSFER_URL = "/api/accounts/transfer"
 
   constructor(private httpClient: HttpClient) { }
 
@@ -53,5 +55,15 @@ export class AccountService {
 
     return lastValueFrom(this.httpClient
       .delete<Account>(this.DELETE_ACCOUNT_URL + accountId, { headers }));
+  }
+
+  transfer(transfer: Transfer): Promise<any> {
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json; charset=utf-8');
+
+    const body = JSON.stringify(transfer);
+
+    return lastValueFrom(this.httpClient
+      .post<Transfer>(this.TRANSFER_URL, body, { headers }));
   }
 }

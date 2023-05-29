@@ -22,9 +22,10 @@
               [disabled]="form.invalid"
               styleClass="p-button-outlined">Log in</p-button>
   </form>
-  <p-card>
-    <p>Not a user yet?</p>
-    <p>Click here to <a [routerLink]="['/signup']">sign up</a>!</p>
+  <p-card [style]="{ width: '220px' }">
+    <p [style]="{ 'text-align': 'center' }">Not a user yet?</p>
+    <p [style]="{ 'text-align': 'center' }">
+      Click <a [routerLink]="['/signup']">here</a> to sign up!</p>
   </p-card>
 </div>
 

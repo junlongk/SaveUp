@@ -2,6 +2,7 @@ package com.junlongk.server.repositories;
 
 import com.junlongk.server.Utils;
 import com.junlongk.server.models.Transaction;
+import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,5 +116,38 @@ public class TransactionRepository {
                 query, updateOps, Document.class, COLLECTION_TRANSACTIONS);
 
         return (int) updateResult.getModifiedCount();
+    }
+
+    public Optional<String> getAllCategories(String userId) {
+        Criteria criteria = Criteria.where(FIELD_USER_ID).is(userId);
+
+        MatchOperation matchResult = Aggregation.match(criteria);
+
+        GroupOperation groupOperation = Aggregation.group()
+                .addToSet(FIELD_CATEGORY).as(FIELD_CATEGORIES);
+
+        ProjectionOperation projectResult = Aggregation.project()
+                .andExclude(FIELD_UNDERSCORE_ID)
+                .andInclude(FIELD_CATEGORIES);
+
+        Aggregation pipeline = Aggregation.newAggregation(matchResult,
+                groupOperation, projectResult);
+
+        AggregationResults<String> results = template.aggregate(
+                pipeline, COLLECTION_TRANSACTIONS, String.class);
+
+        if (results.getMappedResults().isEmpty())
+            return Optional.empty();
+        else {
+            return Optional.of(results.getMappedResults().get(0));
+        }
+    }
+
+    public int deleteTransactionByTransferId(String transferId) {
+        Query query = Query.query(
+                Criteria.where(FIELD_TRANSFER_ID).is(transferId));
+
+        return (int) template.remove(
+                query, Transaction.class, COLLECTION_TRANSACTIONS).getDeletedCount();
     }
 }

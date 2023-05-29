@@ -5,6 +5,7 @@ export interface Transaction {
   accountName: string,
   date: Date,
   category: string,
+  transferId: string,
   transferAccountId: string,
   transferAccountName: string,
   memo: string,

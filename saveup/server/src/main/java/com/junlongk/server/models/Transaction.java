@@ -10,6 +10,7 @@ public class Transaction {
     private String accountName;
     private LocalDate date;
     private String category;
+    private String transferId;
     private String transferAccountId;
     private String transferAccountName;
     private String memo;
@@ -58,6 +59,14 @@ public class Transaction {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getTransferId() {
+        return transferId;
+    }
+
+    public void setTransferId(String transferId) {
+        this.transferId = transferId;
     }
 
     public String getTransferAccountId() {
@@ -110,11 +119,11 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return ("Transaction{transactionId='%s', accountId='%s', accountName='%s', " +
-                "date=%s, category='%s', transferAccountId='%s', " +
+        return ("Transaction{transactionId='%s', accountId='%s', accountName='%s'," +
+                " date=%s, category='%s', transferId='%s', transferAccountId='%s', " +
                 "transferAccountName='%s', memo='%s', outflow=%s, inflow=%s, userId='%s'}")
                 .formatted(transactionId, accountId, accountName, date, category,
-                        transferAccountId, transferAccountName, memo, outflow,
-                        inflow, userId);
+                        transferId, transferAccountId, transferAccountName, memo,
+                        outflow, inflow, userId);
     }
 }

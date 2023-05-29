@@ -52,4 +52,14 @@ public class TransactionService {
     public int updateAccountName(String accountId, String newAccountName) {
         return transactionRepo.updateAccountName(accountId, newAccountName);
     }
+
+    public Optional<String> getAllCategories(
+            String userId) {
+        return transactionRepo.getAllCategories(userId);
+    }
+
+    public int deleteTransactionByTransferId(String transferId) {
+
+        return transactionRepo.deleteTransactionByTransferId(transferId);
+    }
 }

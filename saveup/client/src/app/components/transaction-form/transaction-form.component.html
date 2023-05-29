@@ -24,13 +24,12 @@
       </div>
 
       <div class="input-row-group">
-        <!-- category needs to be dropdown selector-->
         <div class="field input-container">
           <label for="category">Category</label>
-          <input pInputText
-                 type="text"
-                 id="category"
-                 formControlName="category" />
+          <p-dropdown formControlName="category"
+                      [options]="categories"
+                      [editable]="true"
+                      id="category"></p-dropdown>
         </div>
 
         <!-- transferAccount needs to be dropdown selector-->
@@ -43,6 +42,7 @@
         </div>
       </div>
 
+      <input type="hidden" formControlName="transferId" />
       <input type="hidden" formControlName="transferAccountId" />
 
       <div class="input-row-group">

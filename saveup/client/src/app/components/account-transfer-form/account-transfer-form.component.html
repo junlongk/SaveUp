@@ -1,0 +1,44 @@
+<div>
+  <form class="account-form-container"
+        [formGroup]="form"
+        (ngSubmit)="saveTransfer()">
+
+    <input type="hidden" formControlName="accountFromId" />
+    <input type="hidden" formControlName="accountToId" />
+    <div class="field input-container">
+      <label for="accountFromName">Account From</label>
+      <p-dropdown formControlName="accountFromName"
+                  [options]="accounts"
+                  id="accountFromName"
+                  optionLabel="accountName"
+                  optionValue="accountName"></p-dropdown>
+    </div>
+    <div class="field input-container">
+      <label for="accountToName">Account To</label>
+      <p-dropdown formControlName="accountToName"
+                  [options]="accounts"
+                  id="accountToName"
+                  optionLabel="accountName"
+                  optionValue="accountName"></p-dropdown>
+    </div>
+    <div class="field input-container">
+      <label for="date">Date</label>
+      <p-calendar formControlName="date"
+                  id="date"
+                  dateFormat="dd-mm-yy"
+                  appendTo="body"></p-calendar>
+    </div>
+    <div class="field input-container">
+      <label for="amount">Amount</label>
+      <p-inputNumber
+        id="amount"
+        mode="decimal"
+        [minFractionDigits]="0"
+        [maxFractionDigits]="2"
+        formControlName="amount"></p-inputNumber>
+    </div>
+    <p-button type="submit"
+              [disabled]="form.invalid"
+              styleClass="p-button-outlined">Save</p-button>
+  </form>
+</div>

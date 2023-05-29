@@ -12,6 +12,8 @@ export class TransactionService {
   private MODIFY_TRANSACTION_URL = "/api/transactions/modify";
   private DELETE_TRANSACTION_URL = "/api/transactions/delete/";
   private MODIFY_ACCOUNTNAME_URL = "/api/transactions/modifyaccountname";
+  private CATEGORIES_URL = "/api/transactions/categories";
+  private DELETE_BY_TRANSFER_ID_URL = "/api/transactions/deletebytransferid/";
 
   constructor(private httpClient: HttpClient) { }
 
@@ -65,5 +67,24 @@ export class TransactionService {
 
     return lastValueFrom(this.httpClient
       .put(this.MODIFY_ACCOUNTNAME_URL, body, { headers }));
+  }
+
+  getCategories(userId: string): Promise<any> {
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json; charset=utf-8');
+
+    const params = new HttpParams()
+      .set("userId", userId);
+
+    return lastValueFrom(this.httpClient
+      .get<Transaction[]>(this.CATEGORIES_URL, { params, headers }));
+  }
+
+  deleteTransactionByTransferId(transferId: string): Promise<any> {
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json; charset=utf-8');
+
+    return lastValueFrom(this.httpClient
+      .delete<Transaction>(this.DELETE_BY_TRANSFER_ID_URL + transferId, { headers }));
   }
 }

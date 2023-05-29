@@ -9,6 +9,8 @@ import { AccountFormComponent } from "../account-form/account-form.component";
 import { Transaction } from "../../models/Transaction";
 import {DatePipe} from "@angular/common";
 import {TransactionService} from "../../services/transaction.service";
+import {AccountTransferFormComponent} from "../account-transfer-form/account-transfer-form.component";
+import {Transfer} from "../../models/Transfer";
 
 @Component({
   selector: 'app-account-list',
@@ -94,6 +96,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
                   date: this.datepipe
                     .transform(new Date(), 'yyyy-MM-dd'),
                   category: "Manual Adjustment",
+                  transferId: "",
                   transferAccountId: "",
                   transferAccountName: "",
                   memo: "",
@@ -108,6 +111,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
                   date: this.datepipe
                     .transform(new Date(), 'yyyy-MM-dd'),
                   category: "Manual Adjustment",
+                  transferId: "",
                   transferAccountId: "",
                   transferAccountName: "",
                   memo: "",
@@ -165,6 +169,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
               date: this.datepipe
                 .transform(new Date(), 'yyyy-MM-dd'),
               category: "Manual Adjustment",
+              transferId: "",
               transferAccountId: "",
               transferAccountName: "",
               memo: "Account deleted",
@@ -225,6 +230,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
                 date: this.datepipe
                   .transform(new Date(), 'yyyy-MM-dd'),
                 category: "Starting Balance",
+                transferId: "",
                 transferAccountId: "",
                 transferAccountName: "",
                 memo: "",
@@ -239,6 +245,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
                 date: this.datepipe
                   .transform(new Date(), 'yyyy-MM-dd'),
                 category: "Starting Balance",
+                transferId: "",
                 transferAccountId: "",
                 transferAccountName: "",
                 memo: "",
@@ -284,5 +291,81 @@ export class AccountListComponent implements OnInit, OnDestroy {
     if (this.ref) {
       this.ref.close();
     }
+  }
+
+  createTransfer() {
+    this.ref = this.dialogSvc.open(AccountTransferFormComponent, {
+      header: 'New Transfer',
+      width: '450px',
+      height: '480px',
+      contentStyle: { overflow: 'auto' },
+      baseZIndex: 10000
+    });
+
+    this.ref.onClose.subscribe((transfer) => {
+      console.info('subscribed: ', transfer);
+
+      if (transfer != null) {
+        this.accountSvc.transfer(transfer)
+          .then( data => {
+            console.info(data);
+            console.info('>>> msg from server: ', data.message);
+
+            // create two transactions for transfer
+            // one for 'To' account with inflow
+            // one for 'From' account with outflow
+
+            const transactionFrom: Transaction = {
+              accountId: transfer.accountFromId,
+              accountName: transfer.accountFromName,
+              // @ts-ignore
+              date: this.datepipe
+                .transform(transfer.date, 'yyyy-MM-dd'),
+              category: "Transfer",
+              transferId: data.transferId,
+              transferAccountId: transfer.accountToId,
+              transferAccountName: transfer.accountToName,
+              memo: "",
+              outflow: transfer.amount,
+              inflow: 0
+            }
+
+            const transactionTo: Transaction = {
+              accountId: transfer.accountToId,
+              accountName: transfer.accountToName,
+              // @ts-ignore
+              date: this.datepipe
+                .transform(transfer.date, 'yyyy-MM-dd'),
+              category: "Transfer",
+              transferId: data.transferId,
+              transferAccountId: transfer.accountFromId,
+              transferAccountName: transfer.accountFromName,
+              memo: "",
+              outflow: 0,
+              inflow: transfer.amount
+            }
+
+            console.info(transactionFrom, transactionTo);
+
+            this.transactionSvc.addTransaction(transactionTo)
+              .then(data => {
+                console.info('>>> msg from server: ', data.message);
+              });
+
+            this.transactionSvc.addTransaction(transactionFrom)
+              .then(data => {
+                console.info('>>> msg from server: ', data.message);
+              })
+
+            // refresh account list after submitting form
+            this.getAccounts();
+          });
+        this.messageSvc.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: `Added transfer!`
+        });
+      }
+    });
   }
 }

@@ -5,6 +5,9 @@ import {AuthService} from "../../auth/auth.service";
 import {ConfirmationService, MenuItem, MessageService} from "primeng/api";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {TransactionFormComponent} from "../transaction-form/transaction-form.component";
+import {Transfer} from "../../models/Transfer";
+import {AccountService} from "../../services/account.service";
+import {Account} from "../../models/Account";
 
 @Component({
   selector: 'app-transaction-list',
@@ -18,16 +21,19 @@ export class TransactionListComponent implements OnInit, OnDestroy {
   menuItems!: MenuItem[];
   selectedTransaction!: Transaction;
   ref!: DynamicDialogRef;
+  accounts: Account[] = [];
 
   constructor(private transactionSvc: TransactionService,
               private authSvc: AuthService,
               private dialogSvc: DialogService,
               private messageSvc: MessageService,
-              private confirmationSvc: ConfirmationService) { }
+              private confirmationSvc: ConfirmationService,
+              private accountSvc: AccountService) { }
 
   ngOnInit():void {
     this.userId = this.authSvc.getUserId();
     this.getTransactions();
+    this.getAccounts();
 
     this.menuItems = [
       {
@@ -86,19 +92,107 @@ export class TransactionListComponent implements OnInit, OnDestroy {
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.transactionSvc.deleteTransaction(transaction.transactionId)
-          .then(data => {
-            console.info('>>> msg from server: ', data.message);
 
-            // refresh transaction list after deleting
-            this.getTransactions();
+        // deletes 2 transactions if transfer id is found in that transaction
+        // this is for data consistency
+        if (transaction.transferId.length == 36) {
+          this.transactionSvc.deleteTransactionByTransferId(transaction.transferId)
+            .then(data => {
+              console.info('>>> msg from server: ', data.message);
+
+              // update account balance after deleting of transfer transactions
+              if (transaction.outflow > 0) {
+                const transfer: Transfer = {
+                  accountToName: "",
+                  accountToId: transaction.accountId,
+                  accountFromName: "",
+                  accountFromId: transaction.transferAccountId,
+                  date: new Date(),
+                  amount: transaction.outflow
+                }
+                this.accountSvc.transfer(transfer)
+                  .then(data => {
+                    console.info('>>> msg from server: ', data.message)
+                  });
+              }
+              // just to reverse the above to & from
+              else if (transaction.inflow > 0) {
+                const transfer: Transfer = {
+                  accountToName: "",
+                  accountToId: transaction.transferAccountId,
+                  accountFromName: "",
+                  accountFromId: transaction.accountId,
+                  date: new Date(),
+                  amount: transaction.inflow
+                }
+                this.accountSvc.transfer(transfer)
+                  .then(data => {
+                    console.info('>>> msg from server: ', data.message)
+                  });
+              }
+
+              // refresh transaction list after deleting
+              this.getTransactions();
+            });
+
+          this.messageSvc.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Deleted 2 matching transaction'
           });
+        }
+        else {
+          // normal delete operation
+          this.transactionSvc.deleteTransaction(transaction.transactionId)
+            .then(data => {
+              console.info('>>> msg from server: ', data.message);
 
-        this.messageSvc.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Deleted transaction'
-        });
+              // revert the account balance back to original
+              if (transaction.inflow > 0) {
+                const currentBalance=
+                  this.getBalanceByAccountId(transaction.accountId)
+
+                const newAccountDetails: Account = {
+                  accountId: transaction.accountId,
+                  accountName: transaction.accountName,
+                  // @ts-ignore
+                  balance: currentBalance - transaction.inflow,
+                  userId: this.userId
+                }
+
+                this.accountSvc.modifyAccount(newAccountDetails)
+                  .then(data => {
+                    console.info('>>> msg from server: ', data.message);
+                  });
+              }
+              // reverse
+              else if (transaction.outflow > 0) {
+                const currentBalance =
+                  this.getBalanceByAccountId(transaction.accountId);
+
+                const newAccountDetails: Account = {
+                  accountId: transaction.accountId,
+                  accountName: transaction.accountName,
+                  // @ts-ignore
+                  balance: currentBalance + transaction.outflow,
+                  userId: this.userId
+                }
+                this.accountSvc.modifyAccount(newAccountDetails)
+                  .then(data => {
+                    console.info('>>> msg from server: ', data.message);
+                  });
+              }
+
+              // refresh transaction list after deleting
+              this.getTransactions();
+            });
+
+          this.messageSvc.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Deleted transaction'
+          });
+        }
       }
     });
   }
@@ -144,6 +238,26 @@ export class TransactionListComponent implements OnInit, OnDestroy {
           this.transactions = [];
         }
       );
+  }
+
+  private getAccounts() {
+    this.accountSvc.getAccounts(this.userId)
+      .then(data => {
+        this.accounts = data;
+        console.info('>>> accounts: ', this.accounts);
+      })
+      .catch(error => {
+          console.error(error.error.message);
+          // TEMP FIX: clear accounts array after last item is deleted
+          this.accounts = [];
+        }
+      );
+  }
+
+  private getBalanceByAccountId(accountId: string) {
+    const account = this.accounts.find(
+      acc => acc.accountId === accountId);
+    return account ? account.balance : undefined;
   }
 
   ngOnDestroy(): void {

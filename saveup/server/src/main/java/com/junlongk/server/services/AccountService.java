@@ -42,7 +42,7 @@ public class AccountService {
     }
 
     @Transactional(rollbackFor = TransferException.class)
-    public void updateBalanceByTransfer(BigDecimal amount,
+    public String updateBalanceByTransfer(BigDecimal amount,
                                  String fromAccountId,
                                  String toAccountId) throws TransferException {
         boolean statusOfFromAcct = accountRepo.updateFromBalance(amount, fromAccountId);
@@ -50,5 +50,8 @@ public class AccountService {
 
         if (!statusOfFromAcct || !statusOfToAcct)
             throw new TransferException("Error in account transfer!");
+
+        String transferId = UUID.randomUUID().toString();
+        return transferId;
     }
 }

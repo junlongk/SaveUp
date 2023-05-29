@@ -6,6 +6,7 @@ import {DatePipe} from "@angular/common";
 import {Account} from "../../models/Account";
 import {AccountService} from "../../services/account.service";
 import {AuthService} from "../../auth/auth.service";
+import {TransactionService} from "../../services/transaction.service";
 
 @Component({
   selector: 'app-transaction-form',
@@ -17,17 +18,24 @@ export class TransactionFormComponent implements OnInit {
   transaction!: Transaction;
   userId!: string;
   accounts: Account[] = [];
+  categories: string[] = [];
 
   constructor(private fb: FormBuilder,
               public ref: DynamicDialogRef,
               public config: DynamicDialogConfig,
               private datepipe: DatePipe,
               private accountSvc: AccountService,
-              private authSvc: AuthService,) { }
+              private authSvc: AuthService,
+              private transactionSvc: TransactionService) { }
 
   ngOnInit():void {
     this.userId = this.authSvc.getUserId();
+
+    // get list of accounts for drop-down population
     this.getAccounts();
+
+    // get list of transactions for drop-down population
+    this.getCategories();
 
     this.form = this.createForm();
 
@@ -48,6 +56,7 @@ export class TransactionFormComponent implements OnInit {
       const accountNameCtrl = this.form.get('accountName') as FormControl;
       const dateCtrl = this.form.get('date') as FormControl;
       const categoryCtrl = this.form.get('category') as FormControl;
+      const transferIdCtrl = this.form.get('transferId') as FormControl;
       const transferAccountIdCtrl = this.form.get('transferAccountId') as FormControl;
       const transferAccountNameCtrl = this.form.get('transferAccountName') as FormControl;
       const memoCtrl = this.form.get('memo') as FormControl;
@@ -59,6 +68,7 @@ export class TransactionFormComponent implements OnInit {
       accountNameCtrl.setValue(this.transaction.accountName);
       dateCtrl.setValue(formattedDate);
       categoryCtrl.setValue(this.transaction.category);
+      transferIdCtrl.setValue(this.transaction.transferId);
       transferAccountIdCtrl.setValue(this.transaction.transferAccountId);
       transferAccountNameCtrl.setValue(this.transaction.transferAccountName);
       memoCtrl.setValue(this.transaction.memo);
@@ -75,9 +85,10 @@ export class TransactionFormComponent implements OnInit {
       accountId: this.fb.control<string>(''),
       accountName: this.fb.control<string>('', [Validators.required]),
       date: this.fb.control<Date | null>(null, [Validators.required]),
-      category: this.fb.control<string>('', [Validators.required]),
+      category: this.fb.control<string>('' , [Validators.required]),
       // transferAccountId is not mandatory as not every transaction is a transfer
       // transferAccountName is not mandatory as not every transaction is a transfer
+      transferId: this.fb.control<string>(''),
       transferAccountId: this.fb.control<string>(''),
       transferAccountName: this.fb.control<string>(''),
       // memo is optional
@@ -159,5 +170,25 @@ export class TransactionFormComponent implements OnInit {
     let account = this.accounts.find(
       account => account.accountName === accountName);
     return account ? account.accountId : null;
+  }
+
+  private getCategories() {
+    this.transactionSvc.getCategories(this.userId)
+      .then(data => {
+        this.categories = data.categories;
+        console.info('>>> categories: ', this.categories);
+
+        // Remove system generated category from drop-down
+        this.categories = this.categories.filter(
+          category =>
+            category !== 'Starting Balance'
+            && category !== 'Transfer'
+            && category !== 'Manual Adjustment'
+        );
+        console.info('>>> categories: ', this.categories);
+      })
+      .catch(error => {
+        console.error(error.error.message);
+      });
   }
 }

@@ -29,6 +29,7 @@ import {CheckoutComponent} from "./components/checkout/checkout.component";
 import {NgxStripeModule} from "ngx-stripe";
 import {environment} from "../environments/environment";
 import { ServiceWorkerModule } from '@angular/service-worker';
+import {AccountTransferFormComponent} from "./components/account-transfer-form/account-transfer-form.component";
 
 // used for enabling PrimeNG ripple effects throughout the app
 const initializeAppFactory = (primeConfig: PrimeNGConfig) => () => {
@@ -47,6 +48,7 @@ const initializeAppFactory = (primeConfig: PrimeNGConfig) => () => {
     TransactionFormComponent,
     AccountListComponent,
     AccountFormComponent,
+    AccountTransferFormComponent,
     UserPageComponent,
     CheckoutComponent,
     PaymentCancelComponent,

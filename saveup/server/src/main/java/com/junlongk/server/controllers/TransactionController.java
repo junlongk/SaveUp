@@ -180,4 +180,61 @@ public class TransactionController {
                 .body(resp.toString());
     }
 
+    @GetMapping(path ="/categories")
+    @ResponseBody
+    public ResponseEntity<String> getAllCategories(
+            Authentication authentication,
+            @RequestParam String userId) {
+        String userIdFromAuth = authentication.getName();
+        String categories;
+
+        // Check if requested userId belongs to current user
+        if (!userIdFromAuth.equals(userId)) {
+            JsonObject resp = Json.createObjectBuilder()
+                    .add("message", "UserId does not belong to current user!")
+                    .build();
+
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(resp.toString());
+        }
+
+        Optional<String> opt = transactionSvc.getAllCategories(userId);
+
+        if (opt.isPresent()) {
+            categories = opt.get();
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(categories);
+        }
+
+        JsonObject resp = Json.createObjectBuilder()
+                .add("message", "No transaction found under %s".formatted(userId))
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(resp.toString());
+    }
+
+    @DeleteMapping(path = "/deletebytransferid/{transferId}")
+    @ResponseBody
+    public ResponseEntity<String> deleteTransactionByTransferId (
+            Authentication authentication,
+            @PathVariable String transferId) {
+
+        System.out.printf(">>> transfer ID to be deleted: %s\n".formatted(transferId));
+
+        int deleteCount = transactionSvc.deleteTransactionByTransferId(transferId);
+
+        JsonObject resp = Json.createObjectBuilder()
+                .add("message", "%d transactions deleted with transfer ID %s!"
+                        .formatted(deleteCount, transferId))
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(resp.toString());
+    }
 }

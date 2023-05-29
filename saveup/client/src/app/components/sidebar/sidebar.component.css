@@ -25,6 +25,18 @@ a {
   border-bottom-right-radius: 14px;
 }
 
+.sidebar-logo {
+  font-size: 24px;
+  font-weight: bolder;
+  font-style: italic;
+  padding-top: 18px;
+}
+
+.welcome-text {
+  font-weight: bold;
+  padding: 16px 10px
+}
+
 .button-container {
   display: flex;
   flex-direction: column;
